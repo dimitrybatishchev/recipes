@@ -1,0 +1,45 @@
+<?php
+
+namespace Recipes\RecipesBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * TagsRecipes
+ *
+ * @ORM\Table(name="tags_recipes")
+ * @ORM\Entity
+ */
+class TagsRecipes
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var \Tags
+     *
+     * @ORM\ManyToOne(targetEntity="Tags")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="tag_id", referencedColumnName="id")
+     * })
+     */
+    private $tag;
+
+    /**
+     * @var \Recipes
+     *
+     * @ORM\ManyToOne(targetEntity="Recipes")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="recipe_id", referencedColumnName="id")
+     * })
+     */
+    private $recipe;
+
+
+}

@@ -1,0 +1,15 @@
+angular:
+    resource: "@AngularBundle/Controller/"
+    type:     annotation
+    prefix:   /angular/
+
+api:
+    resource: "@ApiBundle/Controller/"
+    type:     annotation
+    prefix:   /api/
+
+recipes:
+    resource: "@RecipesBundle/Controller/"
+    type:     annotation
+    prefix:   /
+

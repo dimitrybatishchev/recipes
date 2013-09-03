@@ -1,0 +1,24 @@
+<div class="container main-page">
+    <h3>Последние</h3>
+    <div class="row">
+        <div ng-repeat="recipe in lastRecipes" class="recipe col-lg-4">
+            <div class="image"><img src="http://localhost/recipes/web/uploads/documents/{{ recipe.path }}" class="img-circle img-polaroid"></div>
+            <div class="category"><a href="#/category/{{ recipe.category.id }}">{{ recipe.category.name }}</a></div>
+            <div class="name"><a href="#/recipe/{{ recipe.id }}">{{ recipe.name }}</a></div>
+            <div class="ingredients">{{ recipe.recipe_ingredient.length }} ингредиентов</div>
+        </div>
+    </div>
+    <hr>
+</div>
+<div class="container main-page">
+    <h3>Популярные</h3>
+    <div class="row">
+        <div ng-repeat="recipe in lastRecipes" class="recipe col-lg-4">
+            <div class="image"><img src="http://localhost/recipes/web/uploads/documents/{{ recipe.path }}" class="img-circle img-polaroid"></div>
+            <div class="category"><a href="#/category/{{ recipe.category.id }}">{{ recipe.category.name }}</a></div>
+            <div class="name"><a href="#/recipe/{{ recipe.id }}">{{ recipe.name }}</a></div>
+            <div class="ingredients">{{ recipe.recipe_ingredient.length }} ингредиентов</div>
+        </div>
+    </div>
+    <hr>
+</div>

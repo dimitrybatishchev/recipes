@@ -1,0 +1,53 @@
+    <div class="page-header">
+        <h1>{{recipe.name}}</h1>
+    </div>
+    <div class='recipe-detail'>
+        <div class='clearfix'>
+            <div class='image'>
+                <img class="img-polaroid" src='http://localhost/recipes/web/uploads/documents/{{ recipe.path }}'>
+            </div>
+            <div class='category-cuisine'>
+                {{recipe.category.name}} <span class="bullet" aria-hidden="true">•</span> {{recipe.cuisine.name}} кухня
+            </div>
+        </div>
+        <hr>
+        <div class='ingredients'>
+            <h4>Ингредиенты</h4>
+            <div class='item clearfix' ng-repeat="recipeIngredient in recipe.recipe_ingredient">
+                <div class='name'>{{recipeIngredient.ingredient.name}}</div>
+                <div class='count'>{{recipeIngredient.count}} {{recipeIngredient.measure_unit.name}}</div>
+            </div>
+        </div>
+        <hr>
+        <div class='description'>
+            <h4>Инструкция</h4>
+            <div ng-bind-html-unsafe="recipe.description | newlines"></div>
+        </div>
+        <hr>
+        <div class='comments'>
+            <h4>Комментарии</h4>
+            <div class='comments-list'>
+                <div class='item clearfix' ng-repeat="comment in recipe.comments">
+                    <div class='avatar'><img src='{{comment.creator.avatar}}' class="img-circle"></div>
+                    <div class='text'>
+                        <div class='name'>{{comment.creator.firstname}} {{comment.creator.lastname}}</div>
+                        {{comment.text}}
+                    </div>
+                    <hr>
+                </div>
+            </div>
+            <div class='comment-add-form'>
+                <form class="form-horizontal" name='commentForm'>
+                    <div class="form-group">
+                        <div class='avatar'>
+                            <img src='{{user.avatar}}' class="img-circle">
+                        </div>
+                        <div class='textarea'>
+                            <textarea rows='4' class="form-control" ng-model="comment.text" required></textarea>
+                            <a href='' class='btn btn-primary' ng-click='addComment()'>Добавить комментарий</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>

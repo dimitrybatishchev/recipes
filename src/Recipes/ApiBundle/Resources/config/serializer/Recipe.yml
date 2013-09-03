@@ -1,0 +1,9 @@
+Recipes\\RecipesBundle\\Entity\\Recipe:
+    exclusion_policy: ALL
+    properties:
+        id:
+            exclude: true
+        name:
+            exclude: true
+        description:
+            exclude: true

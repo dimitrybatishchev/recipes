@@ -1,0 +1,650 @@
+body{
+    background: url('../img/background-pattern.jpg');
+
+}
+.container{
+    //width: 800px;
+}
+.container.white{
+    background: #fff;
+    padding: 0 20px;
+    margin-top: 40px;
+    max-width: 960px;
+}
+.navbar-nav > li > .dropdown-menu{
+    width: 100%;
+}
+@media screen and (min-width: 768px){
+    .jumbotron {
+        padding-top: 68px;
+        background: url('../img/wall_03.jpg') center center;
+        color: #fff;
+        display: none;
+    }
+    .jumbotron.active{
+        display: block;
+    }
+    .jumbotron h1, .jumbotron p{
+        color: #fff;
+        text-shadow: 0 0 10px #000;
+    }
+}
+.form-horizontal .form-group {
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+label{
+    font-weight: bold;
+}
+.btn .icon-trash{
+    margin-top: 4px;
+}
+
+.ingredient-section{
+    margin: 0 0 10px 0;
+}
+.ingredient-section .name{
+    width: 45%;
+}
+.ingredient-section .count{
+    width: 20%;
+}
+.ingredient-section .measure{
+    width: 30%;
+    display: inline-block;
+}
+.ingredient-section .delete{
+    display: inline-block;
+}
+
+.bottom-row{
+
+}
+.bottom-row > div{
+    float: left;
+    width: 40%;
+    padding: 0 20px 0 20px;
+    border-left: 1px solid #f2f2f2;
+}
+.bottom-row > div:first-child{
+    border: none;
+    padding: 0px 20px 0 0;
+}
+.bottom-row > div:last-child{
+    width: 158px;
+}
+
+/* For modern browsers */
+.clearfix:before,
+.clearfix:after {
+    content:"";
+    display:table;
+}
+.clearfix:after {
+    clear:both;
+}
+/* For IE 6/7 (trigger hasLayout) */
+.clearfix {
+    zoom:1;
+}
+
+
+/* Masthead (docs home)
+------------------------- */
+.masthead {
+    padding: 70px 0 80px;
+    margin-bottom: 0;
+    color: #fff;
+}
+.masthead h1 {
+    font-size: 120px;
+    line-height: 1;
+    letter-spacing: -2px;
+}
+.masthead p {
+    font-size: 40px;
+    font-weight: 200;
+    line-height: 1.25;
+}
+
+/* Textual links in masthead */
+.masthead-links {
+    margin: 0;
+    list-style: none;
+}
+.masthead-links li {
+    display: inline;
+    padding: 0 10px;
+    color: rgba(255,255,255,.25);
+}
+
+
+.recipe-list{
+
+}
+.recipe-list .item{
+    position: relative;
+}
+.recipe-list .image{
+    float: left;
+    margin: 0 20px 0 0;
+}
+.recipe-list .image img{
+    width: 128px;
+    height: 128px;
+}
+.recipe-list .category{
+    font-size: 12px;
+    margin: 0 0 6px 0;
+}
+.recipe-list .name{
+    font-weight: bold;
+    font-size: 26px;
+    margin: 0 0 6px 0;
+}
+.recipe-list .name a{
+    text-decoration: none;
+    color: #000;
+}
+.recipe-list .name a:hover{
+    text-decoration: underline;
+}
+.recipe-list .ingredients{
+
+}
+.recipe-list .favorite{
+    display: block;
+}
+.recipe-list .favorite a{
+    display: block;
+    height: 28px;
+    width: 31px;
+    background: url('../img/fav-disable.png');
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
+.recipe-list .favorite a:hover, .recipe-list .favorite a.enable{
+    background: url('../img/fav-enable.png');
+}
+.recipe-list hr {
+    clear: both;
+    height: 1px;
+    margin: 20px 0;
+    background-image: -webkit-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,.1), rgba(0,0,0,0));
+    background-image:    -moz-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,.1), rgba(0,0,0,0));
+    background-image:     -ms-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,.1), rgba(0,0,0,0));
+    background-image:      -o-linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,.1), rgba(0,0,0,0));
+    border: 0;
+}
+
+
+/* Footer
+-------------------------------------------------- */
+#footer {
+    min-height: 210px;
+    margin-top: 30px;
+    background-color: #252528;
+    color: #fff;
+    padding-top: 35px;
+}
+#footer .footer_header {
+    color: rgb(196, 196, 196);
+    font-style: italic;
+    font-weight: 300;
+    font-size: 25px;
+    margin-bottom: 40px;
+    margin-left: 15px;
+}
+
+/* recent posts */
+#footer .recent_posts {
+    margin-left: 0px;
+}
+#footer .recent_posts .post {
+    margin-bottom: 70px;
+    width: 93%;
+}
+#footer .recent_posts .post img {
+    float: left;
+    margin-right: 20px;
+}
+#footer .recent_posts .post .date {
+    font-weight: bold;
+    font-style: italic;
+}
+#footer .recent_posts .post .title {
+    display: block;
+    color: #b5b5b6;
+    font-size: 14px;
+}
+
+/* testimonials */
+#footer .testimonials .wrapper {
+    margin: 0 auto;
+    width: 82%;
+}
+#footer .testimonials .footer_header {
+    margin-left: 30px;
+}
+#footer .testimonials .quote {
+    color: rgb(191, 191, 192);
+}
+#footer .testimonials .quote span {
+    font-size: 32px;
+    font-style: italic;
+    position: relative;
+    top: 5px;
+    font-family: Georgia !important;
+    float: left;
+    margin-right: 8px;
+}
+#footer .testimonials .author {
+    margin-top: 40px;
+}
+#footer .testimonials .author img {
+    float: left;
+    margin-right: 15px;
+    position: relative;
+    top: -6px;
+}
+#footer .testimonials .name {
+    font-size: 13px;
+    font-weight: bold;
+}
+#footer .testimonials .info {
+    font-style: italic;
+    color: #ccc;
+}
+
+/* contact */
+#footer .contact {
+    text-align: right;
+    margin-left: 35px;
+}
+#footer .contact .footer_header {
+    text-align: left;
+    margin-left: 35px;
+}
+#footer .contact input[type="text"],
+#footer .contact textarea {
+    border: none;
+    background-color: #1f1f21;
+    padding: 8px 20px;
+    border-radius: 3px;
+    font-size: 14px;
+    font-family: Lato !important;
+    width: 80%;
+    -webkit-transition: background-color .2s linear;
+    -moz-transition: background-color .2s linear;
+}
+#footer .contact input[type="text"]:focus,
+#footer .contact textarea:focus {
+    border: none;
+    box-shadow: none;
+    background-color: #000;
+}
+#footer .contact input[type="text"]:-moz-placeholder,
+#footer .contact textarea:-moz-placeholder {
+    color: #868687;
+}
+#footer .contact input[type="text"]::-webkit-input-placeholder,
+#footer .contact textarea::-webkit-input-placeholder {
+    color: #868687;
+}
+#footer .contact input[type="text"]:-ms-input-placeholder,
+#footer .contact textarea:-ms-input-placeholder {
+    color: #868687;
+}
+#footer .contact input[type="submit"] {
+    background-color: #3e3e40;
+    border: none;
+    color: #fff;
+    border-radius: 4px;
+    padding: 5px 20px;
+    font-size: 14px;
+    font-weight: bold;
+    -webkit-transition: background-color .2s linear;
+    -moz-transition: background-color .2s linear;
+}
+#footer .contact input[type="submit"]:hover {
+    background-color:#2190DB;
+}
+#footer .credits {
+    padding: 10px 0px 30px 0px;
+}
+#footer .credits .social {
+    margin-top: 30px;
+    text-align: center;
+}
+#footer .credits .social a {
+    margin: 10px;
+}
+#footer .credits .copyright {
+    color: #a6a6a7;
+    font-style: italic;
+    text-align: center;
+    margin-top: 30px;
+}
+#footer .credits .social a {
+    margin: 10px;
+}
+#footer .credits .social a span{
+    display: inline-block;
+    width: 33px;
+    height: 33px;
+    border: none;
+}
+#footer .credits .social span.ico1,
+#footer .credits .social span.ico1h{
+    background-position: 0px 0px;
+}
+#footer .credits .social span.ico2,
+#footer .credits .social span.ico2h{
+    background-position: -37px 0px;
+}
+#footer .credits .social span.ico3,
+#footer .credits .social span.ico3h{
+    background-position: -75px 0px;
+}
+#footer .credits .social span.ico4,
+#footer .credits .social span.ico4h{
+    background-position: -112px -1px;
+}
+#footer .credits .social span.ico5,
+#footer .credits .social span.ico5h{
+    background-position: -151px 0px;
+}
+#footer .credits .social span.ico6,
+#footer .credits .social span.ico6h{
+    background-position: -188px -1px;
+}
+#footer .credits .social span.ico7,
+#footer .credits .social span.ico7h{
+    background-position: -226px 0px;
+}
+#footer .credits .social a:hover span.socialicons{
+    display: none;
+}
+#footer .credits .social a:hover span.socialicons_h{
+    display: inline-block !important;
+}
+#footer .credits .social span.socialicons_h{
+    display: none;
+}
+.socialicons {
+    background: url('../img/socialicons.png') no-repeat;
+    width: 265px;
+    height: 36px;
+}
+.socialicons_h {
+    background: url('../img/socialicons_h.png') no-repeat;
+    width: 265px;
+    height: 36px;
+}
+
+/*Inner Footer*/
+#footer .info{
+    margin-bottom: 10px;
+    margin-left: 0;
+}
+#footer .info .residence{
+    margin-left: 0;
+}
+#footer .info ul{
+    margin: 0;
+    padding: 0;
+}
+#footer .info ul li{
+    list-style: none;
+    font-size: 16px;
+    color: #777E83;
+    line-height: 23px;
+}
+#footer .info ul a{
+    color: #777E83;
+    -webkit-transition: color .2s;
+    -moz-transition: color .2s;
+    -ms-transition: color .2s;
+    transition: color .2s;
+}
+#footer .info ul a:hover{
+    color: #A9B4BB;
+}
+#footer .info .touch{
+    float: right;
+}
+#footer .info .touch ul li{
+    display: inline-block;
+    margin-left: 30px;
+}
+
+.registration-ad{
+    text-align:center;
+
+}
+
+.controls .ingredients-list{
+    list-style: none;
+    margin-left: 0px;
+    margin-top: 5px;
+}
+.controls .ingredients-list [class^="icon-"], .controls .ingredients-list [class*=" icon-"]{
+    margin-top: 4px;
+}
+
+.scrollup{
+    width:40px;
+    height:40px;
+    opacity:0.3;
+    position:fixed;
+    bottom:50px;
+    right:50px;
+    display:none;
+    text-indent:-9999px;
+    background: url('../img/icon_top.png') no-repeat;
+}
+
+.navbar .container{
+    position: relative;
+}
+.navbar .logo{
+    position: absolute;
+    top: 6px;
+    left: 0px;
+}
+
+.navbar .nav>li>span {
+    display: block;
+    float: none;
+    padding: 17px 15px 17px;
+    color: #333;
+    text-decoration: none;
+    text-shadow: 0 1px 0 #f6f6f6;
+}
+
+.navbar .user{
+    position: relative;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    cursor: pointer;
+}
+.navbar .user img{
+    margin: 0 10px 0 0;
+}
+
+
+.recipe-detail{
+
+}
+.recipe-detail .image{
+    float: left;
+    margin: 0 20px 0 0;
+}
+.recipe-detail .ingredients{
+    padding: 0px 60px 20px 60px;
+}
+.recipe-detail .ingredients .item{
+    clear: left;
+    font-size: 20px;
+    border-bottom: 1px solid #eee;
+}
+.recipe-detail .ingredients .item .name{
+    float: left;
+    width: 50%;
+    text-align: left;
+    line-height: 40px;
+}
+.recipe-detail .ingredients .item .count{
+    float: left;
+    width: 50%;
+    text-align: right;
+    line-height: 40px;
+}
+.recipe-detail .description{
+    padding: 0px 60px 20px 60px;
+}
+.recipe-detail .category-cuisine{
+    font-size: 24px;
+}
+.recipe-detail .comments-list{
+
+}
+.recipe-detail .comments-list .item{
+    clear: left;
+}
+.recipe-detail .comments-list .item hr{
+    clear: left;
+}
+.recipe-detail .comments-list .item .avatar{
+    float: left;
+    margin: 0 10px 0 0;
+}
+.recipe-detail .comments-list .item .text{
+    overflow: hidden;
+}
+.recipe-detail .comments-list .item .name{
+    font-weight: bold;
+}
+.recipe-detail .comment-add-form .avatar{
+    float: left;
+    margin: 0 10px 0 0;
+}
+.recipe-detail .comment-add-form .textarea{
+    overflow: hidden;
+}
+.recipe-detail .comment-add-form .textarea textarea{
+    margin: 0 0 10px 0;
+}
+
+
+.search{
+
+}
+.search .category{
+}
+.search .cuisine{
+}
+.search .row{
+    margin-bottom: 15px;
+}
+.search-results{
+    margin-left: 0px;
+    margin-right: 0px;
+}
+.search-results h4{
+    margin-top: 0px;
+}
+.search .ingredients{
+    margin-left: 0px;
+    margin-right: 0px;
+}
+.search .ingredients ul{
+    list-style: none;
+    padding: 0px;
+    margin: 0px;
+}
+.search .ingredients ul li{
+    margin: 0 10px 10px 0;
+    float: left;
+    font-size: 24px;
+}
+.search .submit{
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+
+.container.main-page{
+
+}
+.container.main-page h3{
+    text-align: center;
+    margin-bottom: 30px;
+}
+.container.main-page .recipe .image{
+    text-align: center;
+}
+.container.main-page .recipe .image img{
+    width: 256px;
+    height: 256px;
+}
+
+
+
+/*
+ * jQuery UI Menu 1.10.0
+ *
+* Copyright 2013, AUTHORS.txt (http://jqueryui.com/about)
+ * Dual licensed under the MIT or GPL Version 2 licenses.
+ * http://jquery.org/license
+ *
+ * http://docs.jquery.com/UI/Menu#theming
+ */
+
+.ui-menu {
+    list-style:none;
+    padding: 5px 0px;
+    margin: 0;
+    display:block;
+    float:left;
+    outline: none;
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+    -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+    background-clip: padding-box;
+}
+.ui-menu .ui-menu { margin-top: -3px; position: absolute; }
+.ui-menu .ui-menu-item {
+    margin: 0;
+    padding: 0;
+    zoom: 1;
+    float: left;
+    clear: left;
+    width: 100%;
+    font-size: 17px;
+}
+.ui-menu .ui-menu-divider { margin: 5px -2px 5px -2px; height: 0; font-size: 0; line-height: 0; border-width: 1px 0 0 0; }
+.ui-menu .ui-menu-item a { text-decoration: none; display: block; padding: 2px .4em; line-height: 1.5; zoom: 1; font-weight: normal; }
+.ui-menu .ui-menu-item a.ui-state-focus,
+.ui-menu .ui-menu-item a.ui-state-active {
+    font-weight: normal;
+    margin: 0;
+    color: #ffffff;
+    background: #428bca;
+    background-color: #428bca;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    border-color: #0064cd #0064cd #003f81;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+}
+.ui-helper-hidden-accessible{
+    display: none;
+}
+/* Fix problem with border in ui-state-active */
+.ui-menu .ui-menu-item a.ui-state-active {
+    padding: 1px .4em;
+}

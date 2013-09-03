@@ -1,0 +1,39 @@
+<?php
+
+namespace Recipes\RecipesBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Tag
+ *
+ * @ORM\Table(name="Tag")
+ * @ORM\Entity
+ */
+class Tag
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\ManyToMany(targetEntity="Recipe", mappedBy="tag")
+     */
+    private $recipe;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->recipe = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+}

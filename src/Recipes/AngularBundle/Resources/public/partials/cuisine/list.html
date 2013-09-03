@@ -1,0 +1,30 @@
+    <div class="page-header">
+        <h1>Панель администратора</h1>
+    </div>
+    <div class="navbar">
+        <div class="navbar-inner">
+            <ul class="nav">
+                <li class="active"><a href="#/admin/cuisine">Кухни</a></li>
+                <li class=""><a href="#/admin/category">Категории</a></li>
+            </ul>
+        </div>
+    </div>
+    <div>
+        <a href="#/admin/cuisine/create/">Добавить</a><br><br>
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>Название</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="cuisine in cuisines">
+                    <td>{{ cuisine.id }}</td>
+                    <td>{{ cuisine.name }}</td>
+                    <td><a href="#/admin/cuisine/edit/{{ cuisine.id }}">Редактировать</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>

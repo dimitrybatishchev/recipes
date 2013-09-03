@@ -1,0 +1,18 @@
+    <div class="page-header">
+        <h1>Добавление категории</h1>
+    </div>
+    <form class="form-horizontal">
+        <div class="control-group">
+            <div class="control-label">
+                <label for="name">Название:</label>
+            </div>
+            <div class="controls">
+                <input id="name" type="text" class="input span4" name="name" maxlength="200" ng-model="category.name">
+            </div>
+        </div>
+        <div class="control-group">
+            <div class="controls">
+                <input type="submit" value="Отправить" class="btn" ng-click="saveCategory()">
+            </div>
+        </div>
+    </form>

@@ -1,0 +1,46 @@
+<?php
+
+namespace Recipes\RecipesBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Ingredient
+ *
+ * @ORM\Table(name="RecipeIngredient")
+ * @ORM\Entity
+ */
+class RecipeIngredient
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\ManyToOne(targetEntity="Recipe")
+     */
+    private $recipe;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\ManyToOne(targetEntity="Ingredient")
+     */
+    private $ingredient;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->recipe = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+}
