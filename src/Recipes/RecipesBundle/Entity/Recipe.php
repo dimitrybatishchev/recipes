@@ -79,12 +79,6 @@ class Recipe
     private $usersWhoLiked;
 
     /**
-     * @ORM\ManyToMany(targetEntity="User", inversedBy="likedRecipes")
-     * @ORM\JoinTable(name="User_Liked_Recipes")
-     */
-    private $usersWhoLike;
-
-    /**
      * @ORM\OneToMany(targetEntity="Comment", mappedBy="recipe")
      * @JMS\Expose
      */
@@ -408,29 +402,6 @@ class Recipe
     public function getUsersWhoLiked()
     {
         return $this->usersWhoLiked;
-    }
-
-    /**
-     * Add usersWhoLike
-     *
-     * @param \Recipes\RecipesBundle\Entity\User $usersWhoLike
-     * @return Recipe
-     */
-    public function addUsersWhoLike(\Recipes\RecipesBundle\Entity\User $usersWhoLike)
-    {
-        $this->usersWhoLike[] = $usersWhoLike;
-    
-        return $this;
-    }
-
-    /**
-     * Remove usersWhoLike
-     *
-     * @param \Recipes\RecipesBundle\Entity\User $usersWhoLike
-     */
-    public function removeUsersWhoLike(\Recipes\RecipesBundle\Entity\User $usersWhoLike)
-    {
-        $this->usersWhoLike->removeElement($usersWhoLike);
     }
 
     /**

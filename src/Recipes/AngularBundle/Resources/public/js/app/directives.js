@@ -112,7 +112,7 @@ angular.module('recipes.directives', [])
                         "<img class='img-circle' src='{{User.avatar}}'>" +
                         "<span>{{User.firstname}} {{User.lastname}}</span>" + "<b class='caret'></b>" +
                     "</a>" +
-                    "<ul class='dropdown-menu' role='menu'><li><a href='#'>Профиль</a></li><li><a href='#'>Избранное</a></li><li class='divider'></li><li><a href='#'>Выйти</a></li></ul>" );
+                    "<ul class='dropdown-menu' role='menu'><li><a ng-href='#/profile'>Профиль</a></li><li><a ng-href='#/favorites'>Избранное</a></li><li class='divider'></li><li><a ng-href='/exit'>Выйти</a></li></ul>" );
             }
         }
     }])

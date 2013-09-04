@@ -21,6 +21,7 @@ class AppKernel extends Kernel
             new Recipes\RecipesBundle\RecipesBundle(),
             new Recipes\ApiBundle\ApiBundle(),
             new Recipes\AngularBundle\AngularBundle(),
+            new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

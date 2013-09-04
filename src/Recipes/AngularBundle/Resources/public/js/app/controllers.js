@@ -12,6 +12,36 @@ angular.module('recipes.controllers', [])
             return $location.path() === routeName;
         };
     }])
+    .controller('FavoritesCtrl', ['$scope', 'Recipes', function($scope, Recipes) {
+        $(window).scroll(function(){
+            if ($(this).scrollTop() > 100) {
+                $('.scrollup').fadeIn();
+            } else {
+                $('.scrollup').fadeOut();
+            }
+        });
+        $('.scrollup').click(function(){
+            $("html, body").animate({ scrollTop: 0 }, 600);
+            return false;
+        });
+
+        $scope.recipes = [];
+        $scope.busy = false;
+        $scope.page = 0;
+
+        $scope.nextPage = function(){
+            if ($scope.busy) return;
+            $scope.busy = true;
+
+            var data = Recipes.favorites({ page: $scope.page, userId: UserService.uid }, function(data){
+                for (var i = 0; i < data.length; i++) {
+                    $scope.recipes.push(data[i]);
+                }
+                $scope.page++;
+                $scope.busy = false;
+            });
+        };
+    }])
     .controller('IndexCtrl', ['$scope', 'Recipes', function($scope, Recipes) {
         $scope.lastRecipes = Recipes.getLast();
     }])
@@ -184,57 +214,6 @@ angular.module('recipes.controllers', [])
         $scope.deleteIngredient = function(idx){
             $scope.recipe.ingredients.splice(idx, 1);
         };
-    }])
-    .controller('AdminCtrl', ['$scope', '$http', function($scope, $http) {
-
-    }])
-    .controller('CategoryListCtrl', ['$scope', '$http', '$resource', 'Category', function($scope, $http, $resource, Category) {
-        $scope.categories = Category.query();
-    }])
-    .controller('CategoryCreateCtrl', ['$scope', '$http', '$location', 'Category', function($scope, $http, $location, Category) {
-        $scope.category = new Category();
-        $scope.saveCategory = function(){
-            Category.save($scope.category,function(){
-                $location.path("/admin/category");
-            });
-        }
-    }])
-    .controller('CategoryEditCtrl', ['$scope', '$http', '$routeParams', '$location', 'Category', function($scope, $http, $routeParams, $location, Category) {
-        $scope.category = Category.get({id:$routeParams.id});
-        $scope.saveCategory = function(){
-            $scope.category.$update(function(data){
-                $location.path("/admin/category");
-            });
-        }
-        $scope.deleteCategory = function(){
-            $scope.category.$delete(function(data){
-                $location.path("/admin/category");
-            });
-        }
-    }])
-    .controller('CuisineListCtrl', ['$scope', '$http', 'Cuisine', function($scope, $http, Cuisine) {
-        $scope.cuisines = Cuisine.query();
-    }])
-    .controller('CuisineCreateCtrl', ['$scope', '$http', '$location', 'Cuisine', function($scope, $http, $location, Cuisine) {
-        $scope.cuisine = new Cuisine();
-        $scope.saveCuisine = function(){
-            Cuisine.save($scope.cuisine,function(){
-                $location.path("/admin/cuisine");
-            });
-        }
-    }])
-    .controller('CuisineEditCtrl', ['$scope', '$http', '$routeParams', '$location', 'Cuisine', function($scope, $http, $routeParams, $location, Cuisine) {
-        $scope.cuisine = Cuisine.get({id:$routeParams.id});
-        $scope.saveCuisine = function(){
-            $scope.cuisine.$update(function(data){
-                $location.path("/admin/cuisine");
-            });
-        }
-        $scope.deleteCuisine = function(){
-            $scope.cuisine.$delete(function(data){
-                $location.path("/admin/cuisine");
-            });
-        }
     }]);
 
 

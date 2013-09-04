@@ -44,6 +44,12 @@ angular.module('recipes.resources', []).
                                 actionParam: "addToFavorite"
                             }
                         },
+                        favorites: {
+                            method: "POST",
+                            params: {
+                                action: "favorites"
+                            }
+                        },
                         addComment: {
                             method: "POST",
                             params: {

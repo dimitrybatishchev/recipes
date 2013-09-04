@@ -8,7 +8,7 @@ body{
 .container.white{
     background: #fff;
     padding: 0 20px;
-    margin-top: 40px;
+    margin-top: 90px;
     max-width: 960px;
 }
 .navbar-nav > li > .dropdown-menu{

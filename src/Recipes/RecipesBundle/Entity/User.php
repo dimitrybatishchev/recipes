@@ -47,7 +47,6 @@ class User
 
     /**
      * @ORM\ManyToMany(targetEntity="Recipe", inversedBy="usersWhoLiked")
-     * @ORM\JoinTable(name="User_Liked_Recipes")
      */
     private $likedRecipes;
 
