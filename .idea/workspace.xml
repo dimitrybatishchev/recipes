@@ -1,7 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a47d6c3b-f2b8-41b5-8f8e-962a857237dc" name="Default" comment="" />
+    <list default="true" id="a47d6c3b-f2b8-41b5-8f8e-962a857237dc" name="Default" comment="">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.travis.yml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/LICENSE" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/UPGRADE-2.2.md" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/UPGRADE.md" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/app/DoctrineMigrations/Version20130904105751.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/app/DoctrineMigrations/Version20130904170855.php" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/app/data/data.sql" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/Recipes/AngularBundle/Resources/public/img/background-pattern.gif" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/Recipes/AngularBundle/Resources/public/partials/admin.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/Recipes/AngularBundle/Resources/public/partials/category/create.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/Recipes/AngularBundle/Resources/public/partials/category/edit.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/Recipes/AngularBundle/Resources/public/partials/category/list.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/Recipes/AngularBundle/Resources/public/partials/cuisine/create.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/Recipes/AngularBundle/Resources/public/partials/cuisine/edit.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/Recipes/AngularBundle/Resources/public/partials/cuisine/list.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/Recipes/ApiBundle/Resources/config/services.xml" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+    </list>
     <ignored path="recipes.iws" />
     <ignored path=".idea/workspace.xml" />
     <file path="/parameters.yml" changelist="a47d6c3b-f2b8-41b5-8f8e-962a857237dc" time="1378276576558" ignored="false" />
@@ -62,6 +82,7 @@
     <file path="/README.md" changelist="a47d6c3b-f2b8-41b5-8f8e-962a857237dc" time="1394172745927" ignored="false" />
     <file path="/profile.html" changelist="a47d6c3b-f2b8-41b5-8f8e-962a857237dc" time="1390320277962" ignored="false" />
     <file path="/.gitignore" changelist="a47d6c3b-f2b8-41b5-8f8e-962a857237dc" time="1394348318001" ignored="false" />
+    <file path="/Dummy.txt" changelist="a47d6c3b-f2b8-41b5-8f8e-962a857237dc" time="1394348813798" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -89,7 +110,7 @@
       <file leaf-file-name=".gitignore" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/.gitignore">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="7" column="1" selection-start="78" selection-end="78" vertical-scroll-proportion="0.1875">
+            <state line="7" column="6" selection-start="83" selection-end="83" vertical-scroll-proportion="0.1875">
               <folding />
             </state>
           </provider>
@@ -101,6 +122,14 @@
     <FindUsagesManager>
       <setting name="OPEN_NEW_TAB" value="false" />
     </FindUsagesManager>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitLogSettings">
+    <option name="myDateState">
+      <MyDateState />
+    </option>
   </component>
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
@@ -131,7 +160,7 @@
     <option name="width" value="1301" />
     <option name="height" value="744" />
   </component>
-  <component name="ProjectLevelVcsManager" settingsEditedManually="false">
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <OptionsSetting value="true" id="Add" />
     <OptionsSetting value="true" id="Remove" />
     <OptionsSetting value="true" id="Checkout" />
@@ -181,9 +210,13 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="options.splitter.main.proportions" value="0.3" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="options.lastSelected" value="project.propVCSSupport.Ignored.Files" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="DefaultHtmlFileTemplate" value="Html5" />
+    <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
   </component>
   <component name="PublishConfig">
     <servers>
@@ -221,6 +254,9 @@
       <method />
     </configuration>
     <configuration default="true" type="PhpLocalRunConfigurationType" factoryName="PHP Console">
+      <method />
+    </configuration>
+    <configuration default="true" type="PhpUnitRemoteRunConfigurationType" factoryName="PHPUnit on Server">
       <method />
     </configuration>
     <configuration default="true" type="JavascriptDebugSession" factoryName="Local" singleton="true">
@@ -451,7 +487,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="1" selection-start="78" selection-end="78" vertical-scroll-proportion="0.1875">
+        <state line="7" column="6" selection-start="83" selection-end="83" vertical-scroll-proportion="0.1875">
           <folding />
         </state>
       </provider>
