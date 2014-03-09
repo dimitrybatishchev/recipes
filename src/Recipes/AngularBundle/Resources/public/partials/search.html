@@ -1,10 +1,10 @@
-    <a href="#" class="scrollup">Scroll</a>
+    <a href="#" class="scrollup" scroll-up>Scroll</a>
 
     <div class="page-header">
         <h1>Поиск</h1>
     </div>
 
-    <form class="form-inline search" role="form">
+    <form class="form-inline search" role="form" ng-submit='searchRecipes()'>
         <div class="row">
             <div class="form-group col-md-6">
                 <label>Категория</label>
@@ -40,16 +40,17 @@
                 <li ng-repeat='ingredient in searchData.selectedIngredients'><span class="label label-warning">{{ingredient}}</span></li>
             </ul>
         </div>
-        <div class="form-group col-md-12 submit"><input type='submit' class='btn btn-primary form-control' value='Подобрать' ng-click='searchRecipes()'></div>
+        <div class="form-group col-md-12 submit"><input type='submit' class='btn btn-primary form-control' value='Подобрать'></div>
     </form>
 
     <hr>
 
-    <div class='row search-results'>
+    <div ng-show="error" class="alert alert-warning">По вашему запросу ничего не найдено</div>
+    <div ng-show="recipes" class='row search-results'>
         <h4>Результаты поиска</h4>
         <div class="recipe-list">
             <div ng-repeat="recipe in recipes" class="item clearfix">
-                <div class="image"><img src="http://localhost/recipes/web/uploads/documents/{{ recipe.path }}" class="img-circle img-polaroid"></div>
+                <div class="image"><img ng-src="http://localhost/recipes/web/uploads/documents/{{ recipe.path }}" class="img-circle img-polaroid"></div>
                 <div class="category"><a href="#/category/{{ recipe.category.id }}">{{ recipe.category.name }}</a></div>
                 <div class="name"><a href="#/recipe/{{ recipe.id }}">{{ recipe.name }}</a></div>
                 <div class="creator" creator-name='{{recipe.creator.id}}'>Автор: <a href=''>{{recipe.creator.firstname}} {{recipe.creator.lastname}}</a></div>

@@ -1,219 +1,261 @@
 'use strict';
 
-/* Controllers */
-
 angular.module('recipes.controllers', [])
-    .controller('LoginController', function($scope, $location) {
-
-    })
-    .controller('NavbarController', ['$scope', '$location', 'UserService', function($scope, $location, UserService) {
-        $scope.user = UserService;
+    .controller('NavbarController', ['$scope', '$location', function($scope, $location) {
+        $scope.user = {};
         $scope.routeIs = function(routeName) {
             return $location.path() === routeName;
         };
     }])
-    .controller('FavoritesCtrl', ['$scope', 'Recipes', function($scope, Recipes) {
-        $(window).scroll(function(){
-            if ($(this).scrollTop() > 100) {
-                $('.scrollup').fadeIn();
+    .controller('FavoritesCtrl', ['$scope', 'Recipes', 'Users', 'user', function($scope, Recipes, Users, user) {
+        $scope.user = user;
+
+        $scope.recipes = Users.favoriteRecipes({
+            id: $scope.user.uid
+        });
+
+        $scope.addToFavorite = function(index){
+            if (!$scope.recipes[index].favorite){
+                Recipes.addToFavorite({ id: $scope.recipes[index].id, userId: $scope.user.uid });
             } else {
-                $('.scrollup').fadeOut();
+                Recipes.removeFromFavorite({ id: $scope.recipes[index].id, userId: $scope.user.uid });
             }
-        });
-        $('.scrollup').click(function(){
-            $("html, body").animate({ scrollTop: 0 }, 600);
-            return false;
-        });
-
-        $scope.recipes = [];
-        $scope.busy = false;
-        $scope.page = 0;
-
-        $scope.nextPage = function(){
-            if ($scope.busy) return;
-            $scope.busy = true;
-
-            var data = Recipes.favorites({ page: $scope.page, userId: UserService.uid }, function(data){
-                for (var i = 0; i < data.length; i++) {
-                    $scope.recipes.push(data[i]);
-                }
-                $scope.page++;
-                $scope.busy = false;
-            });
+            $scope.recipes[index].favorite = !$scope.recipes[index].favorite;
         };
     }])
     .controller('IndexCtrl', ['$scope', 'Recipes', function($scope, Recipes) {
-        $scope.lastRecipes = Recipes.getLast();
+        $scope.lastRecipes = Recipes.query({
+            count: 3,
+            orderBy: 'DESC'
+        });
     }])
-    .controller('RecipeListCtrl', ['$scope', '$http', 'Recipes', 'UserService', function($scope, $http, Recipes, UserService) {
-        $(window).scroll(function(){
-            if ($(this).scrollTop() > 100) {
-                $('.scrollup').fadeIn();
-            } else {
-                $('.scrollup').fadeOut();
-            }
+    .controller('NotFoundCtrl', ['$scope', function($scope) {
+
+    }])
+    .controller('ProfileCtrl', ['$scope', '$routeParams', 'Recipes', 'Users', 'user', function($scope, $routeParams, Recipes, Users, user){
+        $scope.user = user;
+
+        $scope.recipes = Users.createdRecipes({
+            id: $routeParams.id
         });
-        $('.scrollup').click(function(){
-            $("html, body").animate({ scrollTop: 0 }, 600);
-            return false;
-        });
+    }])
+    .controller('RecipeListCtrl', ['$scope', '$http', 'Recipes', 'Categories', 'Cuisines', 'user', 'Users', function($scope, $http, Recipes, Categories, Cuisines, user, Users){
+        $scope.user = user;
+        // $scope.userIsLogged = user.isLogged;
 
         $scope.recipes = [];
-        $scope.busy = false;
         $scope.page = 0;
 
-        $scope.addToFavorite = function(id){
-            var data = Recipes.addToFavorite({ id: id, userId: UserService.uid });
+        $scope.categories = Categories.query();
+        $scope.cuisines = Cuisines.query();
+
+        $scope.categoryId = '';
+        $scope.cuisineId = '';
+
+        $scope.chooseCategory = function (categoryId) {
+            $scope.categoryId = categoryId;
+            $scope.recipes = Recipes.query({category: $scope.categoryId, cuisine: $scope.cuisineId, page: 0, user: $scope.user.uid});
+            $scope.page = 1;
         };
 
-        $scope.nextPage = function(){
-            if ($scope.busy) return;
-            $scope.busy = true;
+        $scope.chooseCuisine = function (cuisineId) {
+            $scope.cuisineId = cuisineId;
+            $scope.recipes = Recipes.query({category: $scope.categoryId, cuisine: $scope.cuisineId, page: 0, user: $scope.user.uid});
+            $scope.page = 1;
+        };
 
-            var data = Recipes.query(
+        $scope.addToFavorite = function(index) {
+            if (!$scope.recipes[index].favorite){
+                Users.addToFavorite({ recipeId: $scope.recipes[index].id, id: $scope.user.uid })
+            } else {
+                Users.removeFromFavorite({ recipeId: $scope.recipes[index].id, id: $scope.user.uid });
+            }
+            $scope.recipes[index].favorite = !$scope.recipes[index].favorite;
+        };
+
+        var busy = false;
+        $scope.nextPage = function(){
+            if (busy) return;
+
+            busy = true;
+            Recipes.query(
                 {
-                    actionParam: $scope.page,
-                    action: "page"
+                    category: $scope.categoryId,
+                    cuisine: $scope.cuisineId,
+                    page: $scope.page,
+                    user: $scope.user.uid,
+                    count: 5,
+                    orderBy: "ASC"
                 }, function(data){
-                    for (var i = 0; i < data.length; i++) {
-                        $scope.recipes.push(data[i]);
-                    }
+                    $scope.recipes = $scope.recipes.concat(data);
                     $scope.page++;
-                    $scope.busy = false;
+                    busy = false;
                 }
             );
         };
     }])
-    .controller('RecipeDetailCtrl', ['$scope', '$http', '$routeParams', 'Recipes', 'UserService', function($scope, $http, $routeParams, Recipes, User) {
-        $scope.recipe = Recipes.get({id: $routeParams.id});
-        $scope.user = User;
-
-        $scope.comment = {
-          text: ''
-        };
+    .controller('RecipeDetailCtrl', ['$scope', '$http', '$routeParams', 'Recipes', 'recipe', 'user', function($scope, $http, $routeParams, Recipes, recipe, user) {
+        $scope.user = user;
+        $scope.recipe = recipe;
 
         $scope.addComment = function(){
-            var data = Recipes.addComment({
+            Recipes.addComment({
                 id: $scope.recipe.id,
-                userId: User.uid,
+                userId: $scope.user.uid,
                 text: $scope.comment.text
             });
             $scope.recipe.comments.push({
-                creator: User,
+                creator: $scope.user,
                 text: $scope.comment.text
             });
             $scope.comment.text = '';
         };
     }])
-    .controller('SearchCtrl', ['$scope', '$http', 'Category', 'Cuisine', function($scope, $http, Category, Cuisine) {
-        $(window).scroll(function(){
-            if ($(this).scrollTop() > 100) {
-                $('.scrollup').fadeIn();
-            } else {
-                $('.scrollup').fadeOut();
-            }
-        });
-        $('.scrollup').click(function(){
-            $("html, body").animate({ scrollTop: 0 }, 600);
-            return false;
-        });
+    .controller('SearchCtrl', ['$scope', '$http', 'Recipes', 'categories', 'cuisines', function($scope, $http, Recipes, categories, cuisines) {
+        $scope.categories = categories;
+        $scope.cuisines = cuisines;
 
-        $scope.categories = Category.query();
-        $scope.cuisines = Cuisine.query();
-
-        $scope.searchData = {};
-        $scope.searchData.selectedCategory = null;
-        $scope.searchData.selectedCuisine = null;
-        $scope.searchData.selectedIngredients = [];
+        $scope.searchData = {
+            selectedCategory: null,
+            selectedCuisine:  null,
+            selectedIngredients: []
+        };
 
         $scope.addIngredient = function(){
             $scope.searchData.selectedIngredients.push($scope.ingredient);
             $scope.ingredient = null;
         };
-        $scope.result = null;
 
         $scope.searchRecipes = function(){
-            console.log($scope.searchData);
-            $http.post('http://localhost/recipes/web/app_dev.php/api/recipes/search/', $scope.searchData).success( function(data) {
-                console.log(data);
-                $scope.recipes = data;
-                var listHeadTag = $(".search-results h4");
-                $('html,body').animate({scrollTop: listHeadTag.offset().top - 74},'slow');
+            console.log($scope.searchData.selectedIngredients);
+            Recipes.query({
+                category: $scope.searchData.selectedCategory,
+                cuisine: $scope.searchData.selectedCuisine,
+                ingredients: $scope.searchData.selectedIngredients.join(',')
+            }, function(data){
+                if (data.length == 0){
+                    $scope.error = true;
+                } else {
+                    $scope.error = false;
+                    $scope.recipes = data;
+                    var listHeadTag = $(".search-results h4");
+                    $('html,body').animate({scrollTop: listHeadTag.offset().top - 74},'slow');
+                }
             });
         };
-
-        $scope.recipes = [];
     }])
-    .controller('CreateCtrl', ['$scope', '$http', '$location', 'MeasureUnit', 'UserService', function($scope, $http, $location, MeasureUnit, User) {
+    .controller('RecipeEditCtrl', ['$scope', '$http', '$location', 'measureUnits', 'user', 'Recipes', '$routeParams', function($scope, $http, $location, measureUnits, user, Recipes, $routeParams) {
+        $scope.measureUnits = measureUnits;
+        $scope.user = user;
 
-        console.log(User.isLogged);
+        $scope.recipe = Recipes.get({id: $routeParams.id}, function(data){
+            $scope.recipe = data;
+            $scope.editedRecipe = {
+                category: $scope.recipe.category.name,
+                id: $scope.recipe.id,
+                description: $scope.recipe.description,
+                name: $scope.recipe.name,
+                ingredients: []
+            };
+            if ($scope.recipe.cuisine){
+                $scope.editedRecipe.cuisine = $scope.recipe.cuisine.name;
+            };
+            $scope.recipe.recipeIngredient;
+            for (var i = 0; i < $scope.recipe.recipeIngredient.length; i++){
+                $scope.editedRecipe.ingredients.push({
+                    count: $scope.recipe.recipeIngredient[i].count,
+                    name: $scope.recipe.recipeIngredient[i].ingredient.name,
+                    measureUnit: $scope.recipe.recipeIngredient[i].measure_unit.id
+                });
+            }
+        });
+        $scope.addIngredient = function(){
+            $scope.editedRecipe.ingredients.push({});
+        };
+        $scope.deleteIngredient = function(idx){
+            $scope.editedRecipe.ingredients.splice(idx, 1);
+        };
 
         $scope.files = [];
+
+        $scope.save = function() {
+            $scope.editedRecipe.creator = User.uid;
+            $http({
+                method: 'POST',
+                url: "http://localhost/recipes/web/app_dev.php/api/recipes/" + $scope.editedRecipe.id,
+                headers: { 'Content-Type': false },
+                transformRequest: function (data) {
+                    var formData = new FormData();
+                    formData.append("model", angular.toJson(data.model));
+                    if (data.files[0]){
+                        formData.append("image", data.files[0]);
+                    }
+                    return formData;
+                },
+                data: { model: $scope.editedRecipe, files: $scope.files }
+            }).
+            success(function (data, status, headers, config) {
+                $location.path("/recipe/" + data.id);
+            }).
+            error(function (data, status, headers, config) {
+                alert("failed!");
+            });
+        };
 
         $scope.$on("fileSelected", function (event, args) {
             $scope.$apply(function () {
                 $scope.files.push(args.file);
             });
         });
+    }])
+    .controller('CreateCtrl', ['$scope', '$http', '$location', 'measureUnits', 'user', function($scope, $http, $location, measureUnits, user) {
+        $scope.user = user;
+        $scope.measureUnits = measureUnits;
 
-        //the save method
+        $scope.recipe = {
+            data: {
+                ingredients: [{}, {}, {}]
+            },
+            files: []
+        };
+
+        $scope.addIngredient = function(){
+            $scope.recipe.data.ingredients.push({});
+        };
+        $scope.deleteIngredient = function(idx){
+            $scope.recipe.data.ingredients.splice(idx, 1);
+        };
+
         $scope.save = function() {
-            if ($scope.recipe.ingredients.length == 0){
+            if ($scope.recipe.data.ingredients.length == 0){
                 return;
             }
-            console.log($scope.recipe.ingredients);
-            $scope.recipe.creator = User.uid;
+            $scope.recipe.data.creator = $scope.user.uid;
             $http({
                 method: 'POST',
                 url: "http://localhost/recipes/web/app_dev.php/api/recipes/",
-                //IMPORTANT!!! You might think this should be set to 'multipart/form-data'
-                // but this is not true because when we are sending up files the request
-                // needs to include a 'boundary' parameter which identifies the boundary
-                // name between parts in this multi-part request and setting the Content-type
-                // manually will not set this boundary parameter. For whatever reason,
-                // setting the Content-type to 'false' will force the request to automatically
-                // populate the headers properly including the boundary parameter.
                 headers: { 'Content-Type': false },
-                //This method will allow us to change how the data is sent up to the server
-                // for which we'll need to encapsulate the model data in 'FormData'
                 transformRequest: function (data) {
                     var formData = new FormData();
-                    //need to convert our json object to a string version of json otherwise
-                    // the browser will do a 'toString()' on the object which will result
-                    // in the value '[Object object]' on the server.
                     formData.append("model", angular.toJson(data.model));
-                    //now add all of the assigned files
                     formData.append("image", data.files[0]);
                     return formData;
                 },
-                //Create an object that contains the model and files which will be transformed
-                // in the above transformRequest method
-                data: { model: $scope.recipe, files: $scope.files }
+                data: { model: $scope.recipe.data, files: $scope.recipe.files }
             }).
                 success(function (data, status, headers, config) {
-                    $location.path("/recipes/" + data.id);
+                    $location.path("/recipe/" + data.id);
                 }).
                 error(function (data, status, headers, config) {
                     alert("failed!");
                 });
         };
 
-        $scope.recipe = {
-            ingredients: [{}, {}, {}]
-        };
-        $scope.ingredient = {
-
-        };
-        $scope.ingredients = [
-
-        ];
-        $scope.measureUnits = MeasureUnit.query();
-        $scope.addIngredient = function(){
-            $scope.recipe.ingredients.push({});
-        };
-        $scope.deleteIngredient = function(idx){
-            $scope.recipe.ingredients.splice(idx, 1);
-        };
+        $scope.$on("fileSelected", function (event, args) {
+            $scope.$apply(function () {
+                $scope.recipes.files.push(args.file);
+            });
+        });
     }]);
 
 

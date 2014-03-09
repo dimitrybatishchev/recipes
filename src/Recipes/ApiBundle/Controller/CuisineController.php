@@ -50,7 +50,6 @@ class CuisineController extends Controller
         if (!$cuisine) {
             throw $this->createNotFoundException('Unable to find Category entity.');
         } else {
-            // todo: как эта штука работает?
             $view = View::create()
                 ->setStatusCode(200)
                 ->setData($cuisine)
@@ -80,16 +79,6 @@ class CuisineController extends Controller
 
     /**
      * @Route("/cuisines/{id}")
-     * @Method("PUT")
-     * @Template()
-     */
-    public function editCuisineAction()
-    {
-        return $this->processForm();
-    }
-
-    /**
-     * @Route("/cuisines/{id}")
      * @Method("DELETE")
      * @Template()
      */
@@ -99,7 +88,9 @@ class CuisineController extends Controller
         $em = $this->getDoctrine()->getManager();
         $cuisine = $em->getRepository('RecipesBundle:Cuisine')->find($id);
         if (!$cuisine) {
-            // todo: сущности не существует
+            $response = new Response();
+            $response->setStatusCode(404);
+            return $response;
         }
         $em->remove($cuisine);
         $em->flush();
@@ -116,11 +107,21 @@ class CuisineController extends Controller
      */
     public function newCuisineAction()
     {
-        return $this->processForm();
+        return $this->processJSON();
+    }
+
+    /**
+     * @Route("/cuisines/{id}")
+     * @Method("PUT")
+     * @Template()
+     */
+    public function editCuisineAction()
+    {
+        return $this->processJSON();
     }
 
 
-    private function processForm()
+    private function processJSON()
     {
         $request = $this->getRequest();
         $json = json_decode($request->getContent());
@@ -129,7 +130,9 @@ class CuisineController extends Controller
         if (array_key_exists('id', $json)){
             $cuisine = $em->getRepository('RecipesBundle:Cuisine')->find($json->{'id'});
             if (!$cuisine) {
-                // todo: сущности не существует
+                $response = new Response();
+                $response->setStatusCode(404);
+                return $response;
             }
         } else {
             $cuisine = new Cuisine();
@@ -137,7 +140,7 @@ class CuisineController extends Controller
         $cuisine->setName($json->{'name'});
         $em->persist($cuisine);
         $em->flush();
-        // todo: что за херня
+
         $response = new Response();
         $response->setStatusCode(201);
 

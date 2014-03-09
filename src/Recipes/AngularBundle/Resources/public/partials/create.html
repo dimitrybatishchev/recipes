@@ -1,55 +1,60 @@
-    <div class="page-header">
-        <h1>Добавьте ваш рецепт</h1>
+    <div ng-hide="user.isLogged" class="alert alert-warning">
+        Вы не можете добавить рецепт, для  этого нужно войти в систему
     </div>
-    <form class="form-horizontal" name='recipeForm'>
-        <div class="form-group">
-            <label for="id_from_site">Название:</label>
-            <input id="id_from_site" type="text" class="form-control" name="from_site" maxlength="200" ng-model="recipe.name" required>
+    <div ng-show="user.isLogged">
+        <div class="page-header">
+            <h1>Добавьте ваш рецепт</h1>
         </div>
-        <div class="form-group">
-            <label for="id_from_site">Ингредиенты:</label>
-            <div ng-repeat="ingredient in recipe.ingredients" class='ingredient-section'>
-                <input type="text" autocomplete="ingredients" class="form-control name" blur="validateModel()" placeholder="Название" ng-model="ingredient.name">
-                <input type="text" class="form-control count" placeholder="Количество" ng-model="ingredient.count">
-                <select ng-model="ingredient.measureUnit.id" class='measure form-control'>
-                    <option ng-repeat="measureUnit in measureUnits"
-                            value="{{measureUnit.id}}"
-                            title="{{measureUnit.name}}"
-                            ng-selected="measureUnit.id == ingredient.measureUnit.id">{{measureUnit.name}}
-                    </option>
-                </select>
-                <a href='' ng-click='deleteIngredient($index)' class='btn btn-warning delete'><span class="glyphicon glyphicon-remove"></span></a>
+        <form class="form-horizontal" name='recipeForm' ng-submit="save()">
+            <div class="form-group">
+                <label></label>Название:</label>
+                <input type="text" class="form-control" maxlength="200" ng-model="recipe.name" required>
+            </div>
+            <div class="form-group">
+                <label>Ингредиенты:</label>
+                <div ng-repeat="ingredient in recipe.data.ingredients" class='ingredient-section clearfix'>
+                    <input type="text" autocomplete="ingredients" class="form-control name" blur="validateModel()" placeholder="Название" ng-model="ingredient.name">
+                    <input type="text" class="form-control count" placeholder="Количество" ng-model="ingredient.count">
+                    <select ng-model="ingredient.measureUnit.id" class='measure form-control'>
+                        <option ng-repeat="measureUnit in measureUnits"
+                                value="{{measureUnit.id}}"
+                                title="{{measureUnit.name}}"
+                                ng-selected="measureUnit.id == ingredient.measureUnit.id">{{measureUnit.name}}
+                        </option>
+                    </select>
+                    <a href='' ng-click='deleteIngredient($index)' class='btn btn-warning delete'><span class="glyphicon glyphicon-remove"></span></a>
+                </div>
+
+                <input type="button" class='btn' ng-click="addIngredient()" value="Добавить">
+            </div>
+            <div class="form-group">
+                <label>Инструкция по приготовлению:</label>
+                <textarea rows='12' class="form-control" ng-model="recipe.description" required></textarea>
             </div>
 
-            <input type="button" class='btn' ng-click="addIngredient()" value="Добавить">
-        </div>
-        <div class="form-group">
-            <label for="id_from_site">Инструкция по приготовлению:</label>
-            <textarea rows='12' class="form-control" ng-model="recipe.description" required></textarea>
-        </div>
-
-        <div class='bottom-row clearfix'>
-            <div class="">
-                <div class="control-group">
-                        <label for="id_from_site">Категория:</label>
-                        <input  type="text" class="form-control" autocomplete="categories" blur="validateModel()" ng-model="recipe.category" required>
+            <div class='bottom-row clearfix'>
+                <div class="">
+                    <div class="control-group">
+                            <label>Категория:</label>
+                            <input  type="text" class="form-control" autocomplete="categories" blur="validateModel()" ng-model="recipe.category" required>
+                    </div>
+                </div>
+                <div class="">
+                    <div class="control-group">
+                            <label>Кухня:</label>
+                            <input type="text" class="form-control" autocomplete="cuisines" blur="validateModel()" name="from_site" maxlength="200" ng-model="recipe.cuisine">
+                    </div>
+                </div>
+                <div class="">
+                    <div class="form-group">
+                            <label>Картинка:</label>
+                            <input type="file" class='btn-block' bootstrap-input file-valid required file-upload ng-model="filename" title='Загрузить'/>
+                    </div>
                 </div>
             </div>
-            <div class="">
-                <div class="control-group">
-                        <label for="id_from_site">Кухня:</label>
-                        <input type="text" class="form-control" autocomplete="cuisines" blur="validateModel()" name="from_site" maxlength="200" ng-model="recipe.cuisine">
-                </div>
+            <hr>
+            <div class="form-group">
+                    <input type="submit" value="Отправить" class="btn btn-lg" ng-disabled="recipeForm.$invalid" multiple>
             </div>
-            <div class="">
-                <div class="form-group">
-                        <label for="id_from_site">Картинка:</label>
-                        <input type="file" class='btn-block' bootstrap-input file-valid required file-upload ng-model="filename" title='Загрузить'/>
-                </div>
-            </div>
-        </div>
-        <hr>
-        <div class="form-group">
-                <input type="submit" value="Отправить" class="btn btn-lg" ng-click="save()" ng-disabled="recipeForm.$invalid" multiple>
-        </div>
-    </form>
+        </form>
+    </div>

@@ -1,0 +1,49 @@
+<div class="page-header">
+    <h1>Редактирование рецепта</h1>
+</div>
+
+<form class="form-horizontal" name='recipeForm' ng-submit="save()">
+    <div class="form-group">
+        <label for="id_from_site">Название:</label>
+        <input id="id_from_site" type="text" class="form-control" name="from_site" maxlength="200" ng-model="editedRecipe.name" required>
+    </div>
+    <div class="form-group">
+        <label for="id_from_site">Ингредиенты:</label>
+        <div ng-repeat="ingredient in editedRecipe.ingredients" class='ingredient-section clearfix'>
+            <input type="text" autocomplete="ingredients" class="form-control name" blur="validateModel()" placeholder="Название" ng-model="ingredient.name">
+            <input type="text" class="form-control count" placeholder="Количество" ng-model="ingredient.count">
+            <select ng-model="ingredient.measureUnit" class='measure form-control' ng-options="measureUnit.id as measureUnit.name for measureUnit in measureUnits"></select>
+            <a href='' ng-click='deleteIngredient($index)' class='btn btn-warning delete'><span class="glyphicon glyphicon-remove"></span></a>
+        </div>
+        <input type="button" class='btn' ng-click="addIngredient()" value="Добавить">
+    </div>
+    <div class="form-group">
+        <label for="id_from_site">Инструкция по приготовлению:</label>
+        <textarea rows='12' class="form-control" ng-model="editedRecipe.description" required></textarea>
+    </div>
+
+    <div class='bottom-row clearfix'>
+        <div class="">
+            <div class="control-group">
+                <label for="id_from_site">Категория:</label>
+                <input  type="text" class="form-control" autocomplete="categories" blur="validateModel()" ng-model="editedRecipe.category" required>
+            </div>
+        </div>
+        <div class="">
+            <div class="control-group">
+                <label for="id_from_site">Кухня:</label>
+                <input type="text" class="form-control" autocomplete="cuisines" blur="validateModel()" name="from_site" maxlength="200" ng-model="editedRecipe.cuisine">
+            </div>
+        </div>
+        <div class="">
+            <div class="form-group">
+                <label for="id_from_site">Картинка:</label>
+                <input type="file" class='btn-block' bootstrap-input file-valid required file-upload ng-model="filename" title='Загрузить'/>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="form-group">
+        <input type="submit" value="Отправить" class="btn btn-lg" multiple>
+    </div>
+</form>

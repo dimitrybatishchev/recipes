@@ -4,6 +4,24 @@
 
 
 angular.module('recipes.directives', [])
+    .directive('scrollUp', ['$rootScope', function ($root) {
+        return {
+            link: function (scope, elem, attrs, ctrl) {
+                $(window).scroll(function(){
+                    if ($(this).scrollTop() > 100) {
+                        elem.fadeIn();
+                    } else {
+                        elem.fadeOut();
+                    }
+                });
+                elem.click(function(){
+                    $("html, body").animate({ scrollTop: 0 }, 600);
+                    return false;
+                });
+
+            }
+        }
+    }])
     .directive('ingredientsDecline', function(){
         return function(scope, element, attrs){
             attrs.$observe('ingredientsDecline',function(){
@@ -20,99 +38,84 @@ angular.module('recipes.directives', [])
                 element.text(attrs.ingredientsDecline + ' ингредиент' + word);
             });
         }
-        /*
-        return {
-
-
-            restrict: 'A',
-            replace: true,
-            transclude: true,
-            scope: { title:'@ingredientsDecline' },
-            //template: '<input type="text" value="{{title}}"style="width: 90%"/>',
-            link: function(scope, element, attrs){
-              console.log(scope.title);
-            }
-
-            ,
-            compile: function compile(templateElement, templateAttrs) {
-                templateElement.prepend("nfhfnfnf");
-                return {
-                    pre: function ($scope, element, attrs) {
-                        console.log($scope);
-                    },
-                    post: function(scope, element, attrs) {
-
-                    }
-                }
-            }
-
-        };
-
-        return {
-            restrict: 'A', // стиль декларирования
-            scope: {
-                twoWayBind: "=myTwoWayBind"
-            },
-            compile: function compile(templateElement, templateAttrs) {
-
-            }
-        }; */
     })
-    .directive('vkLogin', ['UserService', '$http', function(User, $http){
+    .directive('vkLogin', ['$http', 'UserVK', function($http, UserVK){
         return {
             restrict: 'A', // стиль декларирования
             scope: true, // новый scope будет создан для этой директивы
             controller: function($scope, $attrs){
-                VK.init({
-                    apiId: 3838127
-                });
-                VK.Auth.getLoginStatus(loginInVK, true);
                 function loginInVK(response){
-                    var that = this;
-                    $scope.User = User;
-                    if (response.status === 'connected') {
-                        $scope.User.uid = response.session.mid;
-                        $scope.User.sid = response.session.sid;
-                        $scope.User.firstname = response.session.user.first_name;
-                        $scope.User.lastname = response.session.user.last_name;
-                        VK.api("users.get", {"uids": response.session.mid, "fields":"photo"}, function(data) {
-                            $scope.User.isLogged = true;
-                            $scope.User.avatar = data.response[0].photo;
-                            console.log('post data');
-                            $http.post('http://localhost/recipes/web/app_dev.php/api/users/login', {
-                                    id: $scope.User.uid,
-                                    firstname: $scope.User.firstname,
-                                    lastname: $scope.User.lastname,
-                                    avatar: $scope.User.avatar
-                                }).success(function(response){
-                                        // ...
-                                });
-                            // Вставить данные пользователя
-                        });
-                    }
-                };
-                $scope.login = function(){
-                    console.log('login');
-                    VK.Auth.login(loginInVK, 1027);
-                    return false;
+                    UserVK.login();
                 }
             },
             link: function(scope, element, attrs){
-                /*Задаем функцию, которая будет вызываться при изменении переменной user
-                $scope.$watch(attrs.vkLogin,function(value){
+                scope.User = UserVK.login();
+                // Задаем функцию, которая будет вызываться при изменении переменной user
+                $scope.$watch(attrs.vkLogin, function(value){
                         element.text(value+attrs.habra);
                     }
                 );
-                */
             },
             compile: function compile(templateElement, templateAttrs) {
                 templateElement.html("" +
-                    "<a href='' ng-hide='User.isLogged' ng-click='login()'>Войти</a>" +
+                    "<a href='' ng-hide='User.isLogged' ng-click='loginInVK()' class='login'><img src='/recipes/web/bundles/angular/img/vkontakte-logo.png'> Войти</a>" +
                     "<a ng-show='User.isLogged' class='user dropdown-toggle' data-toggle='dropdown'>" +
-                        "<img class='img-circle' src='{{User.avatar}}'>" +
+                        "<img class='img-circle' ng-src='{{User.avatar}}'>" +
                         "<span>{{User.firstname}} {{User.lastname}}</span>" + "<b class='caret'></b>" +
                     "</a>" +
-                    "<ul class='dropdown-menu' role='menu'><li><a ng-href='#/profile'>Профиль</a></li><li><a ng-href='#/favorites'>Избранное</a></li><li class='divider'></li><li><a ng-href='/exit'>Выйти</a></li></ul>" );
+                    "<ul class='dropdown-menu' role='menu'><li><a ng-href='#/profile'>Профиль</a></li><li><a ng-href='#/create'>Добавить рецепт</a></li><li class='divider'></li><li><a ng-href='#/favorites'>Избранное</a></li><li class='divider'></li><li><a ng-href='/exit'>Выйти</a></li></ul>" );
+            }
+        }
+    }])
+    .directive('login', ['UserVK', '$q', '$compile', function(UserVK, $q, $compile) {
+        return {
+            restrict: 'CA',
+            replace: false,
+            transclude: false,
+
+            controller: function($scope, $attrs){
+                function loginInVK(response){
+                    UserVK.login();
+                }
+            },
+
+            link: function(scope, elem, attrs) {
+                scope.isLogged = UserVK.getUser();
+
+                scope.isLogged.then(function(response){
+                    scope.User = response;
+                    elem.html($compile(
+                        "<a ng-show='User.isLogged' class='user dropdown-toggle' data-toggle='dropdown'>" +
+                            "<img class='img-circle' ng-src='{{User.avatar}}'>" +
+                            "<span>{{User.firstname}} {{User.lastname}}</span>" + "<b class='caret'></b>" +
+                        "</a>" +
+                        "<ul ng-show='User.isLogged' class='dropdown-menu' role='menu'>" +
+                            "<li>" +
+                                "<a ng-href='#/user/{{User.uid}}'>Профиль</a>" +
+                            "</li>" +
+                            "<li>" +
+                                "<a ng-href='#/create'>Добавить рецепт</a>" +
+                            "</li>" +
+                            "<li>" +
+                                "<a ng-href='#/favorites'>Избранное</a>" +
+                            "</li>" +
+                            "<li class='divider'></li>" +
+                            "<li>" +
+                                "<a ng-href='/exit'>Выйти</a>" +
+                            "</li>" +
+                        "</ul>" +
+                        "<a href='#' ng-hide='User.isLogged' class='login-button'>" +
+                            "<img src='/recipes/web/bundles/angular/img/vkontakte-logo.png'> Войти" +
+                        "</a>"
+                    )(scope));
+                    elem.find('.login-button').bind('click', function(e) {
+                        UserVK.login().then(function(response){
+                            console.log(response);
+                            scope.User = response;
+                        });
+                        e.preventDefault();
+                    });
+                });
             }
         }
     }])
@@ -120,8 +123,6 @@ angular.module('recipes.directives', [])
         return {
             link: function (scope, elem, attrs, ctrl) {
                 $root.$on('$routeChangeStart', function(event, currRoute, prevRoute){
-                    console.log('route change');
-                    console.log(prevRoute.access.isFree);
                     if (!prevRoute.access.isFree && !userSrv.isLogged) {
                         // reload the login route
                     }
@@ -135,7 +136,7 @@ angular.module('recipes.directives', [])
             }
         }
     }])
-    .directive('autocomplete', ['$http', 'Category', function($http, Category) {
+    .directive('autocomplete', ['$http', function($http) {
         return{
             require:"ngModel",
             link: function (scope, element, attrs, ngModel) {
@@ -185,11 +186,8 @@ angular.module('recipes.directives', [])
             scope: true,
             require: 'ngModel',
             link: function (scope, el, attrs, ngModel) {
-                console.log('fu - ' + el);
-
                 // валидация
                 ngModel.$render = function () {
-                    console.log(el);
                     ngModel.$setViewValue(el.val());
                 };
 

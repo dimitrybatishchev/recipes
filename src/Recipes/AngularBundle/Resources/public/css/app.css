@@ -7,7 +7,7 @@ body{
 }
 .container.white{
     background: #fff;
-    padding: 0 20px;
+    padding: 20px 20px 0 20px;
     margin-top: 90px;
     max-width: 960px;
 }
@@ -41,21 +41,31 @@ label{
     margin-top: 4px;
 }
 
+.page-header img{
+    display: inline-block;
+}
+
 .ingredient-section{
     margin: 0 0 10px 0;
 }
 .ingredient-section .name{
-    width: 45%;
+    width: 44%;
+    float: left;
+    margin-right: 1%;
 }
 .ingredient-section .count{
-    width: 20%;
+    width: 19%;
+    float: left;
+    margin-right: 1%;
 }
 .ingredient-section .measure{
-    width: 30%;
-    display: inline-block;
+    width: 29%;
+    float: left;
+    margin-right: 1%;
 }
 .ingredient-section .delete{
-    display: inline-block;
+    float: left;
+    width: 5%;
 }
 
 .bottom-row{
@@ -128,7 +138,7 @@ label{
 }
 .recipe-list .image{
     float: left;
-    margin: 0 20px 0 0;
+    margin: 0 20px 10px 0;
 }
 .recipe-list .image img{
     width: 128px;
@@ -137,6 +147,9 @@ label{
 .recipe-list .category{
     font-size: 12px;
     margin: 0 0 6px 0;
+}
+.recipe-list .category a{
+    cursor: pointer;
 }
 .recipe-list .name{
     font-weight: bold;
@@ -164,8 +177,9 @@ label{
     position: absolute;
     top: 0px;
     right: 0px;
+    cursor: pointer;
 }
-.recipe-list .favorite a:hover, .recipe-list .favorite a.enable{
+.recipe-list .favorite a.enable{
     background: url('../img/fav-enable.png');
 }
 .recipe-list hr {
@@ -179,6 +193,12 @@ label{
     border: 0;
 }
 
+@media screen and (min-width: 768px) {
+    .jumbotron {
+        padding-top: 48px;
+        padding-bottom: 48px;
+    }
+}
 
 /* Footer
 -------------------------------------------------- */
@@ -476,6 +496,9 @@ label{
 
 
 .recipe-detail{
+    position: relative
+}
+.recipe-detail .edit-button{
 
 }
 .recipe-detail .image{
@@ -507,6 +530,9 @@ label{
 }
 .recipe-detail .category-cuisine{
     font-size: 24px;
+}
+.recipe-detail .comments h4{
+    margin-bottom: 25px;
 }
 .recipe-detail .comments-list{
 
@@ -647,4 +673,62 @@ label{
 /* Fix problem with border in ui-state-active */
 .ui-menu .ui-menu-item a.ui-state-active {
     padding: 1px .4em;
+}
+
+.not-found{
+    margin: auto;
+    text-align: center;
+}
+.not-found .visual{
+    margin: 40px 0 80px 0;
+}
+
+.navbar-nav .login{
+    margin: 0;
+}
+.navbar-nav .login .user{
+    margin: 7px 0 0 0;
+}
+.navbar-nav .login img{
+    margin: -7px 10px 0 0;
+}
+
+.sidenav{
+    background: #f9f9f9;
+}
+
+.sidenav > li.active a, .sidenav > li:hover a{
+    background: #f0ad4e;
+    color: #fff;
+}
+
+
+/* Large desktop */
+@media (min-width: 1200px) {
+
+}
+
+/* Portrait tablet to landscape and desktop */
+@media (min-width: 768px) and (max-width: 979px) {
+    .navbar{
+        min-height: 37px;
+    }
+    .nav > li > a {
+        padding: 6px 8px;
+        font-size: 15px;
+    }
+    .navbar .user img{
+        height: 30px;
+        width: 30px;
+    }
+}
+
+/* Landscape phone to portrait tablet */
+@media (max-width: 767px) {
+
+}
+
+/* Landscape phones and down */
+@media (max-width: 480px) {
+
 }

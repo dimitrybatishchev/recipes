@@ -1,0 +1,6 @@
+parameters:
+    user.class: Recipes\ApiBundle\Services\UserService
+
+services:
+    user:
+        class: %user.class%

@@ -27,11 +27,11 @@ class CommentController extends Controller
     public function getAllCommentsAction()
     {
         $em = $this->getDoctrine()->getManager();
-        $categories = $em->getRepository('RecipesBundle:Comment')->findAll();
+        $comments = $em->getRepository('RecipesBundle:Comment')->findAll();
 
         $view = View::create()
             ->setStatusCode(200)
-            ->setData($categories)
+            ->setData($comments)
             ->setFormat('json');
 
         return $this->get('fos_rest.view_handler')->handle($view);
@@ -44,7 +44,17 @@ class CommentController extends Controller
      */
     public function newCommentAction()
     {
-        return $this->processForm();
+        return $this->processJSON();
+    }
+
+    /**
+     * @Route("/comments/{id}")
+     * @Method("PUT")
+     * @Template()
+     */
+    public function editCommentAction()
+    {
+        return $this->processJSON();
     }
 
     /**
@@ -56,28 +66,18 @@ class CommentController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $category = $em->getRepository('RecipesBundle:Comment')->find($id);
+        $comment = $em->getRepository('RecipesBundle:Comment')->find($id);
 
-        if (!$category) {
+        if (!$comment) {
             throw $this->createNotFoundException('Unable to find Comment entity.');
         } else {
-            // todo: как эта штука работает?
             $view = View::create()
                 ->setStatusCode(200)
-                ->setData($category)
+                ->setData($comment)
                 ->setFormat('json');
-            return $this->get('fos_rest.view_handler')->handle($view);
         }
-    }
 
-    /**
-     * @Route("/comments/{id}")
-     * @Method("PUT")
-     * @Template()
-     */
-    public function editCommentAction()
-    {
-        return $this->processForm();
+        return $this->get('fos_rest.view_handler')->handle($view);
     }
 
     /**
@@ -89,11 +89,13 @@ class CommentController extends Controller
     {
 
         $em = $this->getDoctrine()->getManager();
-        $category = $em->getRepository('RecipesBundle:Comment')->find($id);
-        if (!$category) {
-            // todo: сущности не существует
+        $comment = $em->getRepository('RecipesBundle:Comment')->find($id);
+        if (!$comment) {
+            $response = new Response();
+            $response->setStatusCode(404);
+            return $response;
         }
-        $em->remove($category);
+        $em->remove($comment);
         $em->flush();
         $response = new Response();
         $response->setStatusCode(201);
@@ -101,24 +103,26 @@ class CommentController extends Controller
         return $response;
     }
 
-    private function processForm()
+    private function processJSON()
     {
         $request = $this->getRequest();
         $json = json_decode($request->getContent());
 
         $em = $this->getDoctrine()->getManager();
         if (array_key_exists('id', $json)){
-            $category = $em->getRepository('RecipesBundle:Comment')->find($json->{'id'});
-            if (!$category) {
-                // todo: сущности не существует
+            $comment = $em->getRepository('RecipesBundle:Comment')->find($json->{'id'});
+            if (!$comment) {
+                $response = new Response();
+                $response->setStatusCode(404);
+                return $response;
             }
         } else {
-            $category = new Comment();
+            $comment = new Comment();
         }
-        $category->setName($json->{'name'});
-        $em->persist($category);
+        $comment->setName($json->{'name'});
+        $em->persist($comment);
         $em->flush();
-        // todo: что за херня
+
         $response = new Response();
         $response->setStatusCode(201);
 

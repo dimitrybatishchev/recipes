@@ -26,11 +26,11 @@ class MeasureUnitController extends Controller
     public function getAllMeasureUnitsAction()
     {
         $em = $this->getDoctrine()->getManager();
-        $categories = $em->getRepository('RecipesBundle:MeasureUnit')->findAll();
+        $measureUnits = $em->getRepository('RecipesBundle:MeasureUnit')->findAll();
 
         $view = View::create()
             ->setStatusCode(200)
-            ->setData($categories)
+            ->setData($measureUnits)
             ->setFormat('json');
 
         return $this->get('fos_rest.view_handler')->handle($view);
@@ -43,7 +43,17 @@ class MeasureUnitController extends Controller
      */
     public function newMeasureUnitAction()
     {
-        return $this->processForm();
+        return $this->processJSON();
+    }
+
+    /**
+     * @Route("/mesureunits/{id}")
+     * @Method("PUT")
+     * @Template()
+     */
+    public function editMeasureUnitAction()
+    {
+        return $this->processJSON();
     }
 
     /**
@@ -55,28 +65,17 @@ class MeasureUnitController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $category = $em->getRepository('RecipesBundle:MeasureUnit')->find($id);
+        $measureUnit = $em->getRepository('RecipesBundle:MeasureUnit')->find($id);
 
-        if (!$category) {
+        if (!$measureUnit) {
             throw $this->createNotFoundException('Unable to find Category entity.');
         } else {
-            // todo: как эта штука работает?
             $view = View::create()
                 ->setStatusCode(200)
-                ->setData($category)
+                ->setData($measureUnit)
                 ->setFormat('json');
             return $this->get('fos_rest.view_handler')->handle($view);
         }
-    }
-
-    /**
-     * @Route("/mesureunits/{id}")
-     * @Method("PUT")
-     * @Template()
-     */
-    public function editMeasureUnitAction()
-    {
-        return $this->processForm();
     }
 
     /**
@@ -88,11 +87,13 @@ class MeasureUnitController extends Controller
     {
 
         $em = $this->getDoctrine()->getManager();
-        $category = $em->getRepository('RecipesBundle:MeasureUnit')->find($id);
-        if (!$category) {
-            // todo: сущности не существует
+        $measureUnit = $em->getRepository('RecipesBundle:MeasureUnit')->find($id);
+        if (!$measureUnit) {
+            $response = new Response();
+            $response->setStatusCode(404);
+            return $response;
         }
-        $em->remove($category);
+        $em->remove($measureUnit);
         $em->flush();
         $response = new Response();
         $response->setStatusCode(201);
@@ -100,22 +101,24 @@ class MeasureUnitController extends Controller
         return $response;
     }
 
-    private function processForm()
+    private function processJSON()
     {
         $request = $this->getRequest();
         $json = json_decode($request->getContent());
 
         $em = $this->getDoctrine()->getManager();
         if (array_key_exists('id', $json)){
-            $category = $em->getRepository('RecipesBundle:MeasureUnit')->find($json->{'id'});
-            if (!$category) {
-                // todo: сущности не существует
+            $measureUnit = $em->getRepository('RecipesBundle:MeasureUnit')->find($json->{'id'});
+            if (!$measureUnit) {
+                $response = new Response();
+                $response->setStatusCode(404);
+                return $response;
             }
         } else {
-            $category = new Category();
+            $measureUnit = new Category();
         }
-        $category->setName($json->{'name'});
-        $em->persist($category);
+        $measureUnit->setName($json->{'name'});
+        $em->persist($measureUnit);
         $em->flush();
         // todo: что за херня
         $response = new Response();

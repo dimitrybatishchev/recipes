@@ -43,7 +43,17 @@ class CategoryController extends Controller
      */
     public function newCategoryAction()
     {
-        return $this->processForm();
+        return $this->processJSON();
+    }
+
+    /**
+     * @Route("/categories/{id}")
+     * @Method("PUT")
+     * @Template()
+     */
+    public function editCategoryAction()
+    {
+        return $this->processJSON();
     }
 
     /**
@@ -60,7 +70,6 @@ class CategoryController extends Controller
         if (!$category) {
             throw $this->createNotFoundException('Unable to find Category entity.');
         } else {
-            // todo: как эта штука работает?
             $view = View::create()
                 ->setStatusCode(200)
                 ->setData($category)
@@ -90,16 +99,6 @@ class CategoryController extends Controller
 
     /**
      * @Route("/categories/{id}")
-     * @Method("PUT")
-     * @Template()
-     */
-    public function editCategoryAction()
-    {
-        return $this->processForm();
-    }
-
-    /**
-     * @Route("/categories/{id}")
      * @Method("DELETE")
      * @Template()
      */
@@ -109,7 +108,9 @@ class CategoryController extends Controller
         $em = $this->getDoctrine()->getManager();
         $category = $em->getRepository('RecipesBundle:Category')->find($id);
         if (!$category) {
-            // todo: сущности не существует
+            $response = new Response();
+            $response->setStatusCode(404);
+            return $response;
         }
         $em->remove($category);
         $em->flush();
@@ -119,7 +120,7 @@ class CategoryController extends Controller
         return $response;
     }
 
-    private function processForm()
+    private function processJSON()
     {
         $request = $this->getRequest();
         $json = json_decode($request->getContent());
@@ -128,7 +129,9 @@ class CategoryController extends Controller
         if (array_key_exists('id', $json)){
             $category = $em->getRepository('RecipesBundle:Category')->find($json->{'id'});
             if (!$category) {
-                // todo: сущности не существует
+                $response = new Response();
+                $response->setStatusCode(404);
+                return $response;
             }
         } else {
             $category = new Category();

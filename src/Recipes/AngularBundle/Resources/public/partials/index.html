@@ -2,10 +2,10 @@
     <h3>Последние</h3>
     <div class="row">
         <div ng-repeat="recipe in lastRecipes" class="recipe col-lg-4">
-            <div class="image"><img src="http://localhost/recipes/web/uploads/documents/{{ recipe.path }}" class="img-circle img-polaroid"></div>
-            <div class="category"><a href="#/category/{{ recipe.category.id }}">{{ recipe.category.name }}</a></div>
-            <div class="name"><a href="#/recipe/{{ recipe.id }}">{{ recipe.name }}</a></div>
-            <div class="ingredients">{{ recipe.recipe_ingredient.length }} ингредиентов</div>
+            <div class="image"><img ng-src="http://localhost/recipes/web/uploads/documents/{{ recipe.path }}" class="img-circle img-polaroid"></div>
+            <div class="category"><a ng-href="#/category/{{ recipe.category.id }}">{{ recipe.category.name }}</a></div>
+            <div class="name"><a ng-href="#/recipe/{{ recipe.id }}">{{ recipe.name }}</a></div>
+            <div class="ingredients">{{ recipe.recipeIngredient.length }} ингредиентов</div>
         </div>
     </div>
     <hr>
@@ -14,10 +14,10 @@
     <h3>Популярные</h3>
     <div class="row">
         <div ng-repeat="recipe in lastRecipes" class="recipe col-lg-4">
-            <div class="image"><img src="http://localhost/recipes/web/uploads/documents/{{ recipe.path }}" class="img-circle img-polaroid"></div>
-            <div class="category"><a href="#/category/{{ recipe.category.id }}">{{ recipe.category.name }}</a></div>
-            <div class="name"><a href="#/recipe/{{ recipe.id }}">{{ recipe.name }}</a></div>
-            <div class="ingredients">{{ recipe.recipe_ingredient.length }} ингредиентов</div>
+            <div class="image"><img ng-src="http://localhost/recipes/web/uploads/documents/{{ recipe.path }}" class="img-circle img-polaroid"></div>
+            <div class="category"><a ng-href="#/category/{{ recipe.category.id }}">{{ recipe.category.name }}</a></div>
+            <div class="name"><a ng-href="#/recipe/{{ recipe.id }}">{{ recipe.name }}</a></div>
+            <div class="ingredients">{{ recipe.recipeIngredient.length }} ингредиентов</div>
         </div>
     </div>
     <hr>

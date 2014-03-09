@@ -27,66 +27,93 @@ class RecipeController extends Controller
      * @Method("GET")
      * @Rest\View
      */
-    public function getAllRecipesAction()
+    public function getRecipesAction()
     {
-        $em = $this->getDoctrine()->getManager();
-        $qb = $em->createQueryBuilder('Recipes')
-                ->select('r')
-                ->from('RecipesBundle:Recipe', 'r')
-                ->orderBy('r.id', 'ASC')
-                ->setMaxResults(5)
-                ->setFirstResult(0);
-        $query = $qb->getQuery();
-        $recipes = $query->getResult();
+        $request = $this->getRequest();
+        $page = $request->query->get('page');
+        $count = $request->query->get('count');
+        $orderBy = $request->query->get('orderBy');
+        $selectedIngredients = $request->query->get('ingredients');
+        $selectedCategoryId = $request->query->get('category');
+        $selectedCuisineId = $request->query->get('cuisine');
+        $userId = $request->query->get('user');
 
-        $view = View::create()
-            ->setStatusCode(200)
-            ->setData($recipes)
-            ->setFormat('json');
 
-        return $this->get('fos_rest.view_handler')->handle($view);
-    }
-
-    /**
-     * @Route("/recipes/last/{count}")
-     * @Method("GET")
-     * @Rest\View
-     */
-    public function getLastRecipesAction($count)
-    {
         $em = $this->getDoctrine()->getManager();
         $qb = $em->createQueryBuilder('Recipes')
             ->select('r')
-            ->from('RecipesBundle:Recipe', 'r')
-            ->orderBy('r.id', 'DESC')
-            ->setMaxResults($count);
+            ->from('RecipesBundle:Recipe', 'r');
+
+
+
+        if ($selectedCuisineId){
+            $qb = $qb->leftJoin('r.cuisine', 'cuisine');
+        }
+        if ($selectedCategoryId){
+            $qb = $qb->leftJoin('r.category', 'category');
+        }
+        if ($selectedCategoryId && $selectedCuisineId){
+            $qb = $qb->where('cuisine.id = :cuisineId');
+            $qb = $qb->andWhere('category.id = :categoryId');
+        } elseif ($selectedCategoryId){
+            $qb = $qb->where('category.id = :categoryId');
+        } elseif ($selectedCuisineId) {
+            $qb = $qb->where('cuisine.id = :cuisineId');
+        }
+        if ($selectedCuisineId){
+            $qb = $qb->setParameter('cuisineId', $selectedCuisineId);
+        }
+        if ($selectedCategoryId){
+            $qb = $qb->setParameter('categoryId', $selectedCategoryId);
+        }
+
+        if ($orderBy){
+            $qb = $qb->orderBy('r.id', $orderBy);
+        }
+        if ($count){
+            $qb = $qb->setMaxResults($count);
+        }
+        if ($page){
+            $qb = $qb->setFirstResult($page*5);
+        }
+
+
         $query = $qb->getQuery();
         $recipes = $query->getResult();
 
-        $view = View::create()
-            ->setStatusCode(200)
-            ->setData($recipes)
-            ->setFormat('json');
+        if ($userId && $userId !== 'null'){
+            $user = $em->getRepository('RecipesBundle:User')->find($userId);
+            foreach ($user->getLikedRecipes() as $userRecipe){
+                foreach ($recipes as $recipe){
+                    if ($recipe->getId() == $userRecipe->getId()){
+                        $userRecipe->setFavorite(true);
+                    }
+                }
+            }
+        }
 
-        return $this->get('fos_rest.view_handler')->handle($view);
-    }
+        $matchedRecipes = array();
 
-    /**
-     * @Route("/recipes/page/{index}")
-     * @Method("GET")
-     * @Rest\View
-     */
-    public function getRecipesPageAction($index)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $qb = $em->createQueryBuilder('Recipes')
-            ->select('r')
-            ->from('RecipesBundle:Recipe', 'r')
-            ->orderBy('r.id', 'ASC')
-            ->setMaxResults(5)
-            ->setFirstResult($index*5);
-        $query = $qb->getQuery();
-        $recipes = $query->getResult();
+        if ($selectedIngredients){
+            $selectedIngredients = explode(',', $selectedIngredients);
+            $requiredIngredientsCount = count($selectedIngredients);
+            foreach ($recipes as $recipe){
+                $matched = 0;
+                foreach($recipe->getRecipeIngredient() as $recipeIngredient){
+                    $ingredientName = $recipeIngredient->getIngredient()->getName();
+                    foreach($selectedIngredients as $requiredIngredient){
+                        if ($ingredientName === $requiredIngredient){
+                            $matched++;
+                        }
+                    }
+                }
+                if ($matched === $requiredIngredientsCount){
+                    array_push($matchedRecipes, $recipe);
+                }
+            }
+        } else {
+            $matchedRecipes = $recipes;
+        }
 
         $view = View::create()
             ->setStatusCode(200)
@@ -119,34 +146,7 @@ class RecipeController extends Controller
     }
 
     /**
-     * @Route("/recipes/{recipeId}/addToFavorite")
-     * @Method("POST")
-     * @Template()
-     */
-    public function addToFavoriteAction($recipeId)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $recipe = $em->getRepository('RecipesBundle:Recipe')->find($recipeId);
-
-        $request = $this->getRequest();
-        $json = json_decode($request->getContent());
-
-        $userId = $json->{'userId'};
-
-        $user = $em->getRepository('RecipesBundle:User')->find($userId);
-        $user->addLikedRecipe($recipe);
-
-        $em->persist($recipe);
-        $em->flush();
-
-        $response = new Response();
-        $response->setStatusCode(201);
-
-        return $response;
-    }
-
-    /**
-     * @Route("/recipes/{recipeId}/addComment")
+     * @Route("/recipes/{recipeId}/comments")
      * @Method("POST")
      * @Template()
      */
@@ -178,71 +178,137 @@ class RecipeController extends Controller
     }
 
     /**
-     * @Route("/recipes/search/")
+     * @Route("/recipes/{id}")
      * @Method("POST")
-     * @Rest\View
+     * @Template()
      */
-    public function searchRecipeAction()
+    public function editRecipeAction($id)
     {
-        $request = $this->getRequest();
-
-        $json = json_decode($request->getContent());
-
-        if (isset($json->{'selectedCuisine'})){
-            $selectedCuisineId = $json->{'selectedCuisine'};
-        }
-        if (isset($json->{'selectedCategory'})){
-            $selectedCategoryId = $json->{'selectedCategory'};
-        }
         $em = $this->getDoctrine()->getManager();
-        $qb = $em->createQueryBuilder('Recipes')
-            ->select('r')
-            ->from('RecipesBundle:Recipe', 'r')
-            ->leftJoin('r.cuisine', 'cuisine')
-            ->leftJoin('r.category', 'category');
 
-        if (isset($selectedCuisineId)){
-            $qb = $qb->where('cuisine.id = :cuisineId AND category.id = :categoryId');
-        } else {
-            $qb = $qb->where('category.id = :categoryId');
+        $recipe = $em->getRepository('RecipesBundle:Recipe')->find($id);
+
+        $request = $this->getRequest();
+        $json = json_decode($request->request->get('model'));
+
+        $creatorUid = $json->{'creator'};
+
+        if ($creatorUid != $recipe->getCreator()->getId()){
+            $response = new Response();
+            $response->setStatusCode(403);
+            return $response;
         }
-        if (isset($selectedCuisineId)){
-            $qb = $qb->setParameter('cuisineId', $selectedCuisineId);
-        }
-        $qb = $qb->setParameter('categoryId', $selectedCategoryId);
 
-        $query = $qb->getQuery();
-        $recipes = $query->getResult();
+        $em->getConnection()->beginTransaction();
+        try {
+            $recipe->setName($json->{'name'});
+            $recipe->setDescription($json->{'description'});
+
+            $cuisine = null;
+            if (isset($json->{'cuisine'})){
+                $cuisine = $em->getRepository('RecipesBundle:Cuisine')->findOneBy(array('name' => $json->{'cuisine'}));
+            }
+            $category = $em->getRepository('RecipesBundle:Category')->findOneBy(array('name' => $json->{'category'}));
+
+            if (!$cuisine){
+                $cuisine = new Cuisine();
+                $cuisine->setName($json->{'cuisine'});
+                $em->persist($cuisine);
+                $em->flush();
+            }
+            if (!$category) {
+                $category = new Category();
+                $category->setName($json->{'category'});
+                $em->persist($category);
+                $em->flush();
+            }
+
+            $recipe->setCategory($category);
+            $recipe->setCuisine($cuisine);
 
 
-        $matchedRecipes = array();
+            $recipeIngredients = $recipe->getRecipeIngredient();
 
-
-        foreach ($recipes as $recipe){
-            $matched = 0;
-            $requiredIngredientsCount = count($json->{'selectedIngredients'});
-            foreach($recipe->getRecipeIngredient() as $recipeIngredient){
-                $ingredientName = $recipeIngredient->getIngredient()->getName();
-                foreach($json->{'selectedIngredients'} as $requiredIngredient){
-                    if ($ingredientName === $requiredIngredient){
-                        $matched++;
+            // изменяем уже существующие ингоедиенты
+            foreach($recipeIngredients as $currentRecipeIngredient){
+                $exist = false;
+                foreach ($json->{'ingredients'} as $ingredientJson) {
+                    if (isset($ingredientJson->{'name'}) && isset($ingredientJson->{'count'})){
+                        if ($ingredientJson->{'name'} == $currentRecipeIngredient->getIngredient()->getName()){
+                            $currentRecipeIngredient->setCount($ingredientJson->{'count'});
+                            $measureUnit = $em->getRepository('RecipesBundle:MeasureUnit')->find($ingredientJson->{'measureUnit'});
+                            $currentRecipeIngredient->setMeasureUnit($measureUnit);
+                            $em->persist($currentRecipeIngredient);
+                            $em->flush();
+                            $exist = true;
+                        }
                     }
                 }
             }
-            if ($matched === $requiredIngredientsCount){
-                array_push($matchedRecipes, $recipe);
+
+            // добавляем не существующие
+            foreach ($json->{'ingredients'} as $ingredientJson) {
+                $exist = false;
+                foreach($recipe->getRecipeIngredient() as $currentRecipeIngredient){
+                    if (isset($ingredientJson->{'name'}) && isset($ingredientJson->{'count'})){
+                        if ($ingredientJson->{'name'} == $currentRecipeIngredient->getIngredient()->getName()){
+                            $exist = true;
+                        }
+                    }
+                }
+                if (!$exist){
+                    $ingredient = $em->getRepository('RecipesBundle:Ingredient')->findOneBy(array('name' => $ingredientJson->{'name'}));
+                    if (!$ingredient) {
+                        $ingredient = new Ingredient();
+                        $ingredient->setName($ingredientJson->{'name'});
+                        $em->persist($ingredient);
+                        $em->flush();
+                    }
+                    $recipeIngredient = new RecipeIngredient();
+                    $recipeIngredient->setIngredient($ingredient);
+                    $recipeIngredient->setRecipe($recipe);
+                    $recipeIngredient->setCount($ingredientJson->{'count'});
+
+                    $measureUnit = $em->getRepository('RecipesBundle:MeasureUnit')->find($ingredientJson->{'measureUnit'});
+                    $recipeIngredient->setMeasureUnit($measureUnit);
+
+                    $em->persist($recipeIngredient);
+                }
             }
+
+            // удаляем ненужные
+            foreach($recipeIngredients as $currentRecipeIngredient){
+                $exist = false;
+                foreach ($json->{'ingredients'} as $ingredientJson) {
+                    if (isset($ingredientJson->{'name'}) && isset($ingredientJson->{'count'})){
+                        if ($ingredientJson->{'name'} == $currentRecipeIngredient->getIngredient()->getName()){
+                            $exist = true;
+                        }
+                    }
+                }
+                if (!$exist){
+                    $em->remove($currentRecipeIngredient);
+                    $em->persist($recipe);
+                    $em->flush();
+                }
+            }
+
+            $image = $request->files->get('image');
+            if($image){
+                $recipe->setFile($image);
+                $recipe->upload();
+            }
+
+            $em->flush();
+            $em->getConnection()->commit();
+
+        } catch (\Exception $e) {
+            $em->getConnection()->rollback(); // откатываем транзакцию
+            $em->close();
+            throw $e;
         }
 
-        $view = View::create()
-            ->setStatusCode(200)
-            ->setData($matchedRecipes)
-            ->setFormat('json');
-
-        return $this->get('fos_rest.view_handler')->handle($view);
-
-        // todo: что за херня
-        $response = new Response();
+        $response = new Response(json_encode(array('id' => $recipe->getId())));
         $response->setStatusCode(201);
 
         return $response;
@@ -255,10 +321,10 @@ class RecipeController extends Controller
      */
     public function newRecipeAction()
     {
-        return $this->processForm();
+        return $this->processJSON();
     }
 
-    private function processForm()
+    private function processJSON()
     {
         $request = $this->getRequest();
         $json = json_decode($request->request->get('model'));
@@ -267,11 +333,9 @@ class RecipeController extends Controller
 
         $creatorUid = $json->{'creator'};
 
-        print_r($creatorUid);
-
         if (!$creatorUid){
             $response = new Response();
-            $response->setStatusCode(400);
+            $response->setStatusCode(403);
             return $response;
         }
 
@@ -298,19 +362,17 @@ class RecipeController extends Controller
             $recipe->setFile($image);
             $recipe->upload();
 
-
+            $cuisine = null;
             if (isset($json->{'cuisine'})){
                 $cuisine = $em->getRepository('RecipesBundle:Cuisine')->findOneBy(array('name' => $json->{'cuisine'}));
             }
             $category = $em->getRepository('RecipesBundle:Category')->findOneBy(array('name' => $json->{'category'}));
 
-            if (isset($cuisine)) {
-                if (!$cuisine){
-                    $cuisine = new Cuisine();
-                    $cuisine->setName($json->{'cuisine'});
-                    $em->persist($cuisine);
-                    $em->flush();
-                }
+            if (!$cuisine) {
+                $cuisine = new Cuisine();
+                $cuisine->setName($json->{'cuisine'});
+                $em->persist($cuisine);
+                $em->flush();
             }
             if (!$category) {
                 $category = new Category();

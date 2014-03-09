@@ -35,11 +35,8 @@
                             <a href="#/create">Добавить</a>
                         </li>
                     </ul>
-
-
-
                     <ul class="nav navbar-nav navbar-right">
-                        <li vk-login class='dropdown'></li>
+                        <li class='dropdown login'></li>
                     </ul>
                 </div>
             </div>
@@ -49,7 +46,7 @@
         <div class="container">
             <h1>Подбор рецептов</h1>
             <p>Приложение позволяет подобрать рецепт по вашему вкусу и по тому, что у вас лежит в холодильнике</p>
-            <p><a class="btn btn-primary btn-lg">Начать »</a></p>
+            <p><a ng-href="#/search" class="btn btn-primary btn-lg">Начать »</a></p>
         </div>
     </div>
 </div>
@@ -111,6 +108,11 @@
 <script src="{{ asset('bundles/angular/js/vendor/bootstrap.file-input.js') }}"></script>
 
 <script src="http://vk.com/js/api/openapi.js" type="text/javascript"></script>
+<script>
+    VK.init({
+        apiId: 3838127
+    });
+</script>
 
 <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
 <script src="{{ asset('bundles/angular/js/vendor/angular-resource.js') }}"></script>

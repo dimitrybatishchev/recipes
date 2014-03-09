@@ -1,13 +1,40 @@
 angular.module('recipes.resources', []).
     factory('Users', function ($resource) {
-        var Users = $resource('http://localhost/recipes/web/app_dev.php/api/users/:action:id/:actionParam',
+        var Users = $resource('http://localhost/recipes/web/app_dev.php/api/users/:action:id/:actionParam/:recipeId',
             {
                 id: '@id',
                 action: "@action",
-                actionParam: "@actionParam"
+                actionParam: "@actionParam",
+                recipeId: "@recipeId"
             },
             {
-                update: { method: 'PUT'}
+                update: { method: 'PUT'},
+                createdRecipes: {
+                    method: "GET",
+                    params: {
+                        actionParam: "created-recipes"
+                    },
+                    isArray: true
+                },
+                favoriteRecipes:{
+                    method: "GET",
+                    params:{
+                        actionParam: "favorites"
+                    },
+                    isArray: true
+                },
+                addToFavorite: {
+                    method: "PUT",
+                    params: {
+                        actionParam: "favorites"
+                    }
+                },
+                removeFromFavorite: {
+                    method: "DELETE",
+                    params: {
+                        actionParam: "favorites"
+                    }
+                }
             });
         angular.extend(Users.prototype, {
 
@@ -23,37 +50,10 @@ angular.module('recipes.resources', []).
                     },
                     {
                         update: { method: 'PUT'},
-                        getLast: {
-                            method: "GET",
-                            params: {
-                                action: "last",
-                                actionParam: "3"
-                            },
-                            isArray: true
-                        },
-                        search:{
-                            method: "GET",
-                            params:{
-                                action: "page",
-                                actionParam: 0
-                            }
-                        },
-                        addToFavorite: {
-                            method: "POST",
-                            params: {
-                                actionParam: "addToFavorite"
-                            }
-                        },
-                        favorites: {
-                            method: "POST",
-                            params: {
-                                action: "favorites"
-                            }
-                        },
                         addComment: {
                             method: "POST",
                             params: {
-                                actionParam: "addComment"
+                                actionParam: "comments"
                             }
                         }
                     });
@@ -62,47 +62,43 @@ angular.module('recipes.resources', []).
         });
         return Recipes;
     }).
-    factory('Category', function ($resource) {
-        var Category = $resource('http://localhost/recipes/web/app_dev.php/api/categories/:action:id/:actionParam',
+    factory('Categories', function ($resource) {
+        var Categories = $resource('http://localhost/recipes/web/app_dev.php/api/categories/:action:id/:actionParam',
                         {
                             id: '@id',
                             action: "@action",
                             actionParam: "@actionParam"
                         },
                         {
-                            search: {
-                                method: "GET",
-                                params: {
-                                    action: "search"
-                                },
-                                isArray: true
-                            },
                             update: { method: 'PUT'}
                         });
-            angular.extend(Category.prototype, {
+            angular.extend(Categories.prototype, {
 
             });
-        return Category;
+        return Categories;
     }).
-    factory('Cuisine', function ($resource) {
-        var Cuisine = $resource('http://localhost/recipes/web/app_dev.php/api/cuisines/:id',
+    factory('Cuisines', function ($resource) {
+        var Cuisines = $resource('http://localhost/recipes/web/app_dev.php/api/cuisines/:id',
+            {
+                id: '@id'
+            },
+            {
+                update: { method: 'PUT'}
+
+            });
+            angular.extend(Cuisines.prototype, {
+
+            });
+        return Cuisines;
+    }).
+    factory('MeasureUnits', function ($resource) {
+        var MeasureUnits = $resource('http://localhost/recipes/web/app_dev.php/api/measureunits/:id',
             {id: '@id'},
             {
                 update: { method: 'PUT'}
-                });
-            angular.extend(Cuisine.prototype, {
+            });
+            angular.extend(MeasureUnits.prototype, {
 
             });
-        return Cuisine;
-    }).
-    factory('MeasureUnit', function ($resource) {
-        var Cuisine = $resource('http://localhost/recipes/web/app_dev.php/api/measureunits/:id',
-            {id: '@id'},
-            {
-                update: { method: 'PUT'}
-            });
-            angular.extend(Cuisine.prototype, {
-
-            });
-        return Cuisine;
+        return MeasureUnits;
     });

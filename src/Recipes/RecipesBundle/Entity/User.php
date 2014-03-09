@@ -4,6 +4,10 @@ namespace Recipes\RecipesBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use JMS\SerializerBundle\Annotation as JMS;
+use JMS\SerializerBundle\Annotation\Groups;
+use JMS\SerializerBundle\Annotation\Type;
+use JMS\SerializerBundle\Annotation\VirtualProperty;
+use JMS\SerializerBundle\Annotation\SerializedName;
 
 /**
  * Category
@@ -47,8 +51,15 @@ class User
 
     /**
      * @ORM\ManyToMany(targetEntity="Recipe", inversedBy="usersWhoLiked")
+     * @ORM\JoinTable(name="User_Liked_Recipes")
      */
     private $likedRecipes;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Recipe", mappedBy="creator")
+     * @SerializedName("createdRecipes")
+     */
+    private $createdRecipes;
 
     /**
      * Constructor
@@ -104,6 +115,16 @@ class User
     public function getLikedRecipes()
     {
         return $this->likedRecipes;
+    }
+
+    /**
+     * Get likedRecipes
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCreatedRecipes()
+    {
+        return $this->createdRecipes;
     }
 
     /**

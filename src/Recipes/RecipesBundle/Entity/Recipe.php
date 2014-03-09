@@ -6,6 +6,10 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
 use JMS\SerializerBundle\Annotation as JMS;
+use JMS\SerializerBundle\Annotation\Groups;
+use JMS\SerializerBundle\Annotation\Type;
+use JMS\SerializerBundle\Annotation\VirtualProperty;
+use JMS\SerializerBundle\Annotation\SerializedName;
 
 /**
  * Recipe
@@ -23,6 +27,7 @@ class Recipe
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      * @JMS\Expose
+     * @SerializedName("id")
      */
     private $id;
 
@@ -31,6 +36,7 @@ class Recipe
      *
      * @ORM\Column(name="name", type="string", length=128, nullable=false)
      * @JMS\Expose
+     * @SerializedName("name")
      */
     private $name;
 
@@ -39,12 +45,14 @@ class Recipe
      *
      * @ORM\Column(name="description", type="text", nullable=false)
      * @JMS\Expose
+     * @SerializedName("description")
      */
     private $description;
 
     /**
      * @ORM\OneToMany(targetEntity="RecipeIngredient", mappedBy="recipe")
      * @JMS\Expose
+     * @SerializedName("recipeIngredient")
      */
     private $recipeIngredient;
 
@@ -57,6 +65,7 @@ class Recipe
      * })
      *
      * @JMS\Expose
+     * @SerializedName("category")
      */
     private $category;
 
@@ -69,18 +78,21 @@ class Recipe
      * })
      *
      * @JMS\Expose
+     * @SerializedName("creator")
      */
     private $creator;
 
     /**
      * @ORM\ManyToMany(targetEntity="User", inversedBy="likedRecipes")
      * @ORM\JoinTable(name="User_Liked_Recipes")
+     * @SerializedName("usersWhoLiked")
      */
     private $usersWhoLiked;
 
     /**
      * @ORM\OneToMany(targetEntity="Comment", mappedBy="recipe")
      * @JMS\Expose
+     * @SerializedName("comments")
      */
     private $comments;
 
@@ -92,6 +104,7 @@ class Recipe
      *   @ORM\JoinColumn(name="cuisine_id", referencedColumnName="id")
      * })
      * @JMS\Expose
+     * @SerializedName("cuisine")
      */
     private $cuisine;
 
@@ -105,6 +118,25 @@ class Recipe
      * @Assert\File(maxSize="6000000")
      */
     private $file;
+
+    private $favorite;
+
+    /**
+     * @VirtualProperty
+     * @SerializedName("favorite")
+     * @Groups({"manage"})
+     */
+    public function foo(){
+        return $this->favorite;
+    }
+
+    public function setFavorite($favorite)
+    {
+        $this->favorite = $favorite;
+
+        return $this;
+    }
+
 
 
     /**
