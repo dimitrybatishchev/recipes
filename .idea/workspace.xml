@@ -19,7 +19,7 @@
       <change type="DELETED" beforePath="$PROJECT_DIR$/src/Recipes/AngularBundle/Resources/public/partials/cuisine/list.html" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/src/Recipes/ApiBundle/Resources/config/services.xml" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/vcs.xml" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/web/app.php" afterPath="$PROJECT_DIR$/web/app.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="recipes.iws" />
@@ -107,11 +107,24 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name=".gitignore" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/.gitignore">
+      <file leaf-file-name="app.php" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/web/app.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="7" column="6" selection-start="83" selection-end="83" vertical-scroll-proportion="0.1875">
-              <folding />
+            <state line="2" column="0" selection-start="7" selection-end="7" vertical-scroll-proportion="0.05597015">
+              <folding>
+                <element signature="e#7#56#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="app_dev.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/web/app_dev.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="2" column="0" selection-start="7" selection-end="7" vertical-scroll-proportion="-1.25">
+              <folding>
+                <element signature="e#7#52#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -134,7 +147,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/Recipes/AngularBundle/Resources/public/partials/index.html" />
         <option value="$PROJECT_DIR$/src/Recipes/AngularBundle/Resources/public/partials/list.html" />
         <option value="$PROJECT_DIR$/src/Recipes/AngularBundle/Resources/public/partials/create.html" />
         <option value="$PROJECT_DIR$/src/Recipes/AngularBundle/Resources/public/js/app.js" />
@@ -150,6 +162,7 @@
         <option value="$PROJECT_DIR$/src/Recipes/ApiBundle/Controller/MeasureUnitController.php" />
         <option value="$PROJECT_DIR$/src/Recipes/ApiBundle/Controller/RecipeController.php" />
         <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$PROJECT_DIR$/web/app.php" />
       </list>
     </option>
   </component>
@@ -201,6 +214,20 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="recipes" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="recipes" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="recipes" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="web" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -376,21 +403,11 @@
     <option name="FILE_HISTORY_SPLITTER_PROPORTION" value="0.6" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager />
+    <breakpoint-manager>
+      <option name="time" value="1" />
+    </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/Recipes/AngularBundle/Resources/public/partials/list.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="33" selection-start="770" selection-end="770" vertical-scroll-proportion="-9.375" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Recipes/AngularBundle/Resources/public/js/app/directives.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="68" column="7" selection-start="3026" selection-end="3026" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Recipes/AngularBundle/Resources/views/Default/index.html.twig">
       <provider selected="true" editor-type-id="text-editor">
         <state line="36" column="25" selection-start="1709" selection-end="1709" vertical-scroll-proportion="1.0843374">
@@ -487,8 +504,26 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="6" selection-start="83" selection-end="83" vertical-scroll-proportion="0.1875">
+        <state line="6" column="14" selection-start="76" selection-end="76" vertical-scroll-proportion="0.16071428">
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/app_dev.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="2" column="0" selection-start="7" selection-end="7" vertical-scroll-proportion="-1.25">
+          <folding>
+            <element signature="e#7#52#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/app.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="2" column="0" selection-start="7" selection-end="7" vertical-scroll-proportion="0.05597015">
+          <folding>
+            <element signature="e#7#56#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
